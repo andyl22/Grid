@@ -1,10 +1,10 @@
 import styles from './Grid.module.scss';
-import GridCell from './GridCell';
+import TextGridCell from './TextGridCell';
 
 export default function Grid() {
   return (
     <div className={styles.GridContainer}>
-      <GridCell />
+      <TextGridCell />
     </div>
   );
 }

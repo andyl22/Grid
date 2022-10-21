@@ -2,33 +2,30 @@ import { useState } from 'react';
 import styles from './GridCell.module.scss';
 
 export default function GridCell(props) {
-  const { gridEditElement, submitAction } = props;
+  // eslint-disable-next-line react/prop-types
+  const { gridEditElement, cancelAction, textValue } = props;
   const [readOnly, setReadOnly] = useState(true);
 
   const switchToEditMode = () => {
     setReadOnly(false);
   };
 
-  const cancelInput = (e) => {
-    setReadOnly(true);
-    cancelAction();
+  const cancelEdit = (e) => {
+    if (e.keyCode === 27) {
+      setReadOnly(true);
+      cancelAction();
+    }
   };
 
   const divRender = (
     <div className={styles.GridCellContainer} onClick={switchToEditMode}>
-      <p>{gridValue}</p>
+      <p>{textValue}</p>
     </div>
   );
 
-  const inputRender = (
-    <form onSubmit={handleSubmit}>
-      <input
-        value={gridValue}
-        onKeyDown={cancelInput}
-        onChange={handleChange}
-      />
-    </form>
+  return readOnly ? (
+    divRender
+  ) : (
+    <div onKeyDown={cancelEdit}>{gridEditElement}</div>
   );
-
-  return readOnly ? divRender : inputRender;
 }
