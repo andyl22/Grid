@@ -1,0 +1,19 @@
+.gridCellContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  border-left: none;
+  border-bottom: none;
+  padding: 0.1rem 1rem;
+  width: 100px;
+  max-width: 100px;
+  height: 60px;
+  max-height: 60px;
+  input {
+    width: 100%;
+  }
+  select {
+    width: 100%;
+  }
+}

@@ -25,16 +25,20 @@ export default function GridCell(props) {
   };
 
   const divRender = (
-    <div className={styles.GridCellContainer} onClick={switchToEditMode}>
+    <div className={styles.gridCellContainer} onClick={switchToEditMode}>
       <p>{textValue}</p>
     </div>
   );
 
-  return readOnly ? (
-    divRender
-  ) : (
-    <form onKeyDown={cancelEdit} onSubmit={saveEdits}>
+  const editRender = (
+    <form
+      className={styles.gridCellContainer}
+      onKeyDown={cancelEdit}
+      onSubmit={saveEdits}
+    >
       {gridEditElement}
     </form>
   );
+
+  return readOnly ? divRender : editRender;
 }
