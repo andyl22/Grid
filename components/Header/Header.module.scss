@@ -1,0 +1,47 @@
+@keyframes fadeIn {
+  0% {
+    opacity: 0%;
+    transform: scaleY(50%);
+  }
+  100% {
+    opacity: 100%;
+    transform: scaleY(100%);
+  }
+}
+
+.header {
+  flex: 0;
+  position: sticky;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 3rem;
+  top: 0;
+  left: 0;
+  padding: 0.3rem 1rem 0.2rem 1rem;
+  transition-duration: 1s;
+  z-index: 50;
+  transition: 0.1s;
+  white-space: nowrap;
+  color: black;
+  background: white;
+  animation: fadeIn 0.5s ease-out;
+  transform-origin: top;
+  a,
+  button {
+    background: none;
+    color: black;
+    position: relative;
+    &:hover {
+      color: #01a232;
+    }
+  }
+}
+
+.hide {
+  top: -10px;
+  opacity: 0;
+  z-index: -1;
+  transition: 0.1s;
+}

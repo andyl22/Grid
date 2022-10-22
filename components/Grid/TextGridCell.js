@@ -2,10 +2,11 @@ import { useState } from 'react';
 import GridCell from './GridCell';
 
 export default function TextGridCell() {
+  const [revertValue, setRevertValue] = useState('Test');
   const [gridValue, setGridValue] = useState('Test');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const submitAction = () => {
+    setRevertValue(gridValue);
   };
 
   // handle input change and modify state
@@ -15,13 +16,9 @@ export default function TextGridCell() {
 
   return (
     <GridCell
-      gridEditElement={
-        <form onSubmit={handleSubmit}>
-          <input value={gridValue} onChange={handleChange} />
-        </form>
-      }
-      cancelAction={() => console.log('test')}
-      submitAction={() => console.log('test')}
+      gridEditElement={<input value={gridValue} onChange={handleChange} />}
+      cancelAction={() => setGridValue(revertValue)}
+      submitAction={submitAction}
       textValue={gridValue}
     />
   );

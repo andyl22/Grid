@@ -3,11 +3,12 @@ import styles from './GridCell.module.scss';
 
 export default function GridCell(props) {
   // eslint-disable-next-line react/prop-types
-  const { gridEditElement, cancelAction, textValue } = props;
+  const { gridEditElement, submitAction, cancelAction, textValue } = props;
   const [readOnly, setReadOnly] = useState(true);
 
   const switchToEditMode = () => {
     setReadOnly(false);
+    submitAction;
   };
 
   const cancelEdit = (e) => {
@@ -15,6 +16,12 @@ export default function GridCell(props) {
       setReadOnly(true);
       cancelAction();
     }
+  };
+
+  const saveEdits = (e) => {
+    e.preventDefault();
+    setReadOnly(true);
+    submitAction();
   };
 
   const divRender = (
@@ -26,6 +33,8 @@ export default function GridCell(props) {
   return readOnly ? (
     divRender
   ) : (
-    <div onKeyDown={cancelEdit}>{gridEditElement}</div>
+    <form onKeyDown={cancelEdit} onSubmit={saveEdits}>
+      {gridEditElement}
+    </form>
   );
 }
