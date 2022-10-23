@@ -16,7 +16,9 @@ export default function TextGridCell() {
 
   return (
     <GridCell
-      gridEditElement={<input value={gridValue} onChange={handleChange} />}
+      gridEditElement={
+        <input value={gridValue} onChange={handleChange} autoFocus />
+      }
       cancelAction={() => setGridValue(revertValue)}
       submitAction={submitAction}
       textValue={gridValue}

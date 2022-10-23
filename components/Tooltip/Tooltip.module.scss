@@ -1,0 +1,22 @@
+.tooltipContainer {
+  position: absolute;
+  bottom: 70%;
+  left: 70%;
+  background: rgba(25, 25, 25, 0.9);
+  color: white;
+  z-index: 99;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  width: 300px;
+  max-width: 300px;
+  .tooltipText {
+    padding: 0 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+    width: 100%;
+  }
+}

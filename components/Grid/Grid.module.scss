@@ -5,10 +5,10 @@
   width: 100%;
   background: white;
   color: black;
-  padding: 0.2rem;
   .gridRow {
     display: flex;
     border-left: 1px solid black;
+    width: fit-content;
     &:last-of-type {
       border-bottom: 1px solid black;
     }

@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   border: 1px solid black;
   border-left: none;
   border-bottom: none;
@@ -10,6 +11,12 @@
   max-width: 100px;
   height: 60px;
   max-height: 60px;
+  .displayText {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   input {
     width: 100%;
   }
