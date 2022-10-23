@@ -17,7 +17,7 @@ export default function GridCell(props) {
   const cancelEdit = (e) => {
     if (e.keyCode === 27) {
       setReadOnly(true);
-      cancelAction();
+      if (cancelAction) cancelAction();
     }
   };
 
