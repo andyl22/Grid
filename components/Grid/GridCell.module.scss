@@ -29,3 +29,12 @@
     margin: 1rem 0;
   }
 }
+
+.notEditable {
+  .gridCellContainer {
+    &:hover {
+      background: white !important;
+      cursor: pointer !important;
+    }
+  }
+}

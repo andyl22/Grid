@@ -1,6 +1,11 @@
 .gridContainer {
+  display: flex;
+  flex-direction: column;
   border: 5px double rgb(214, 214, 214);
   width: 100%;
   background: white;
   color: black;
+  .columnHeader {
+    padding: 0 1rem;
+  }
 }

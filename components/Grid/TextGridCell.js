@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import GridCell from './GridCell';
 
-export default function TextGridCell() {
+export default function TextGridCell(props) {
+  const { initialGridValue } = props;
   const [revertValue, setRevertValue] = useState('Test');
-  const [gridValue, setGridValue] = useState('Test');
+  const [gridValue, setGridValue] = useState(initialGridValue);
 
   const submitAction = () => {
     setRevertValue(gridValue);

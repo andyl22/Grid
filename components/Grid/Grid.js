@@ -1,5 +1,6 @@
 import styles from './Grid.module.scss';
 import GridRow from './GridRow';
+import GridCell from './GridCell';
 import PicklistGridCell from './PicklistGridCell';
 import TextGridCell from './TextGridCell';
 
@@ -20,58 +21,75 @@ export default function Grid() {
   const rowData = [
     {
       id: 1,
-      testFieldOne: { value: 'Test', dataType: 'text' },
+      testFieldOne: { value: 'Test 1-1', dataType: 'text' },
       testFieldTwo: {
-        value: 'Test',
+        value: 'Test 1-2',
         dataType: 'picklist',
         options: ['Test', 'Not a Test', 'Picklist Stuff', 'Hello World']
       },
-      testFieldThree: { value: 'Test', dataType: 'text' }
+      testFieldThree: { value: 'Test 1-3', dataType: 'text' }
     },
     {
       id: 2,
-      testFieldOne: { value: 'Test', dataType: 'text' },
+      testFieldOne: { value: 'Test 2-1', dataType: 'text' },
       testFieldTwo: {
-        value: 'Test',
+        value: 'Test 2-2',
         dataType: 'picklist',
         options: ['Test', 'Not a Test', 'Picklist Stuff', 'Hello World']
       },
-      testFieldThree: { value: 'Test', dataType: 'text' }
+      testFieldThree: { value: 'Test 2-3', dataType: 'text' }
     },
     {
       id: 3,
-      testFieldOne: { value: 'Test', dataType: 'text' },
+      testFieldOne: { value: 'Test 3-1', dataType: 'text' },
       testFieldTwo: {
-        value: 'Test',
+        value: 'Test 3-2',
         dataType: 'picklist',
         options: ['Test', 'Not a Test', 'Picklist Stuff', 'Hello World']
       },
-      testFieldThree: { value: 'Test', dataType: 'text' }
+      testFieldThree: { value: 'Test 3-3', dataType: 'text' }
     }
   ];
 
-  const testRowData = rowData.map((row) => {
-    switch (row.dataType) {
-      case 'picklist':
-        return <PicklistGridCell />;
-      case 'text':
-        return <TextGridCell />;
-      default:
-        console.log('Meow');
-    }
+  const mappedRow = rowData.map((row) => {
+    const mappedRowData = columnData.map((col) => {
+      switch (row[col.name].dataType) {
+        case 'picklist':
+          return (
+            <PicklistGridCell
+              key={`${col.name}_${row.id}`}
+              initialGridValue={row[col.name].value}
+            />
+          );
+        case 'text':
+          return (
+            <TextGridCell
+              key={`${col.name}_${row.id}`}
+              initialGridValue={row[col.name].value}
+            />
+          );
+        default:
+          console.log(row);
+          return;
+      }
+    });
+    return <GridRow key={row.id} gridCells={mappedRowData} />;
   });
 
-  const headerRow = (
-    <>
-      <p>Header 1</p>
-      <p>Header 2</p>
-    </>
-  );
+  const headerRow = columnData.map((column) => {
+    return (
+      <GridCell
+        className={styles.columnHeader}
+        key={column.name}
+        textValue={column.name}
+      />
+    );
+  });
 
   return (
     <div className={styles.gridContainer}>
       <GridRow gridCells={headerRow} />
-      <GridRow gridCells={testRowData} />
+      {mappedRow}
     </div>
   );
 }

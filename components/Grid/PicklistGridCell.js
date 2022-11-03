@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import GridCell from './GridCell';
 
-export default function PicklistGridCell() {
-  const [gridValue, setGridValue] = useState('Test');
+export default function PicklistGridCell(props) {
+  const { initialGridValue } = props;
+  const [gridValue, setGridValue] = useState(initialGridValue);
 
   const submitAction = () => {
     setGridValue(gridValue);

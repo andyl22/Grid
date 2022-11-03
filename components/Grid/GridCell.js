@@ -10,6 +10,8 @@ export default function GridCell(props) {
 
   const switchToEditMode = (e) => {
     e.stopPropagation();
+    // prevent editing if there is no cell action provided (used to present static data in a cell)
+    if (!submitAction) return;
     setReadOnly(false);
     submitAction;
   };
@@ -40,7 +42,12 @@ export default function GridCell(props) {
   };
 
   const divRender = (
-    <div className={styles.gridCellContainer} onClick={switchToEditMode}>
+    <div
+      className={`${styles.gridCellContainer} ${
+        submitAction ? '' : styles.notEditable
+      }`}
+      onClick={switchToEditMode}
+    >
       <p className={styles.displayText} onMouseOver={displayTooltip}>
         {textValue}
       </p>
