@@ -3,6 +3,7 @@ import GridRow from './GridRow';
 import GridCell from './GridCell';
 import PicklistGridCell from './PicklistGridCell';
 import TextGridCell from './TextGridCell';
+import HeaderCell from './HeaderCell';
 
 export default function Grid() {
   /*
@@ -13,9 +14,24 @@ export default function Grid() {
       3. Sorting
   */
   const columnData = [
-    { label: 'Test One', name: 'testFieldOne', colWidth: '200px' },
-    { label: 'Test Two', name: 'testFieldTwo', colWidth: '300px' },
-    { label: 'Test Three', name: 'testFieldThree', colWidth: '250px' }
+    {
+      label: 'Test One',
+      name: 'testFieldOne',
+      dataType: 'text',
+      colWidth: '200px'
+    },
+    {
+      label: 'Test Two',
+      name: 'testFieldTwo',
+      dataType: 'picklist',
+      colWidth: '300px'
+    },
+    {
+      label: 'Test Three',
+      name: 'testFieldThree',
+      dataType: 'text',
+      colWidth: '250px'
+    }
   ];
 
   const rowData = [
@@ -46,22 +62,23 @@ export default function Grid() {
         value: 'Test 3-2',
         dataType: 'picklist',
         options: ['Test', 'Not a Test', 'Picklist Stuff', 'Hello World']
-      },
-      testFieldThree: { value: 'Test 3-3', dataType: 'text' }
+      }
     }
   ];
 
   const mappedRow = rowData.map((row) => {
     const mappedRowData = columnData.map((col) => {
-      switch (row[col.name].dataType) {
-        case 'picklist':
+      if (!row[col.name]) return <GridCell key={`${col.name}_${row.id}`} />;
+      switch (true) {
+        case col.dataType === 'picklist':
           return (
             <PicklistGridCell
               key={`${col.name}_${row.id}`}
               initialGridValue={row[col.name].value}
+              options={row[col.name].options}
             />
           );
-        case 'text':
+        case col.dataType === 'text':
           return (
             <TextGridCell
               key={`${col.name}_${row.id}`}
@@ -69,7 +86,6 @@ export default function Grid() {
             />
           );
         default:
-          console.log(row);
           return;
       }
     });
@@ -77,13 +93,7 @@ export default function Grid() {
   });
 
   const headerRow = columnData.map((column) => {
-    return (
-      <GridCell
-        className={styles.columnHeader}
-        key={column.name}
-        textValue={column.name}
-      />
-    );
+    return <HeaderCell textValue={column.name} key={column.name} />;
   });
 
   return (

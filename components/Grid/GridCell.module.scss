@@ -10,6 +10,7 @@
   width: 200px;
   min-height: 50px;
   padding: 0.5rem;
+  background: white;
   .displayText {
     padding: 0;
     overflow: hidden;
@@ -19,7 +20,7 @@
     -webkit-box-orient: vertical;
   }
   &:hover {
-    background: rgb(174, 174, 174);
+    filter: brightness(80%);
     cursor: cell;
   }
   input,
@@ -31,10 +32,8 @@
 }
 
 .notEditable {
-  .gridCellContainer {
-    &:hover {
-      background: white !important;
-      cursor: pointer !important;
-    }
+  &:hover {
+    filter: none !important;
+    cursor: default !important;
   }
 }

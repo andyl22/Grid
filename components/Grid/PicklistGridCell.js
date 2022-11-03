@@ -2,7 +2,7 @@ import { useState } from 'react';
 import GridCell from './GridCell';
 
 export default function PicklistGridCell(props) {
-  const { initialGridValue } = props;
+  const { initialGridValue, options } = props;
   const [gridValue, setGridValue] = useState(initialGridValue);
 
   const submitAction = () => {
@@ -16,14 +16,15 @@ export default function PicklistGridCell(props) {
     setGridValue(e.target.value);
   };
 
+  const mappedOptions = options.map((option) => (
+    <option key={option} value={option}>
+      {option}
+    </option>
+  ));
+
   const selectInput = (
     <select onChange={changeHandler} autoFocus>
-      <option value="Test 1">
-        Test 1Test 1Test 1Test 1Test 1Test 1Test 1Test 1 Test 1
-      </option>
-      <option value="Test 2">Test 2</option>
-      <option value="Test 3">Test 3</option>
-      <option value="Test 4">Test 4</option>
+      {mappedOptions}
     </select>
   );
 
