@@ -4,6 +4,7 @@ import GridCell from './GridCell';
 import PicklistGridCell from './PicklistGridCell';
 import TextGridCell from './TextGridCell';
 import GridHeader from './GridHeader';
+import { useState } from 'react';
 
 export default function Grid() {
   /*
@@ -13,7 +14,7 @@ export default function Grid() {
       2. Resizing
       3. Sorting
   */
-  const headerData = [
+  const [headerData, setHeaderData] = useState([
     {
       label: 'Test One',
       name: 'testFieldOne',
@@ -31,8 +32,26 @@ export default function Grid() {
       name: 'testFieldThree',
       dataType: 'text',
       colWidth: '250px'
+    },
+    {
+      label: 'Test Four',
+      name: 'testFieldFour',
+      dataType: 'text',
+      colWidth: '250px'
+    },
+    {
+      label: 'Test Five',
+      name: 'testFieldFive',
+      dataType: 'text',
+      colWidth: '250px'
+    },
+    {
+      label: 'Test Six',
+      name: 'testFieldSix',
+      dataType: 'text',
+      colWidth: '250px'
     }
-  ];
+  ]);
 
   const rowData = [
     {
@@ -43,7 +62,10 @@ export default function Grid() {
         dataType: 'picklist',
         options: ['Not a Test', 'Test 1-2', 'Picklist Stuff', 'Hello World']
       },
-      testFieldThree: { value: 'Test 1-3', dataType: 'text' }
+      testFieldThree: { value: 'Test 1-3', dataType: 'text' },
+      testFieldFour: { value: 'Test 1-3', dataType: 'text' },
+      testFieldFive: { value: 'Test 1-3', dataType: 'text' },
+      testFieldSix: { value: 'Test 1-3', dataType: 'text' }
     },
     {
       id: 2,
@@ -53,7 +75,10 @@ export default function Grid() {
         dataType: 'picklist',
         options: ['Test 2-2', 'Not a Test', 'Picklist Stuff', 'Hello World']
       },
-      testFieldThree: { value: 'Test 2-3', dataType: 'text' }
+      testFieldThree: { value: 'Test 2-3', dataType: 'text' },
+      testFieldFour: { value: 'Test 1-3', dataType: 'text' },
+      testFieldFive: { value: 'Test 1-3', dataType: 'text' },
+      testFieldSix: { value: 'Test 1-3', dataType: 'text' }
     },
     {
       id: 3,
@@ -61,7 +86,10 @@ export default function Grid() {
       testFieldTwo: {
         value: 'Test 3-2',
         dataType: 'picklist',
-        options: ['Test 3-2', 'Not a Test', 'Picklist Stuff', 'Hello World']
+        options: ['Test 3-2', 'Not a Test', 'Picklist Stuff', 'Hello World'],
+        testFieldFour: { value: 'Test 1-3', dataType: 'text' },
+        testFieldFive: { value: 'Test 1-3', dataType: 'text' },
+        testFieldSix: { value: 'Test 1-3', dataType: 'text' }
       }
     }
   ];
@@ -94,7 +122,7 @@ export default function Grid() {
 
   return (
     <div className={styles.gridContainer}>
-      <GridHeader headerData={headerData} />
+      <GridHeader headerData={headerData} setHeaderData={setHeaderData} />
       {mappedRow}
     </div>
   );
