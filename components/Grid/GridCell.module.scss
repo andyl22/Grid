@@ -19,21 +19,10 @@
     -webkit-line-clamp: 6;
     -webkit-box-orient: vertical;
   }
-  &:hover {
-    filter: brightness(80%);
-    cursor: cell;
-  }
   input,
   select {
     height: 100%;
     width: 100%;
     margin: 1rem 0;
-  }
-}
-
-.notEditable {
-  &:hover {
-    filter: none !important;
-    cursor: default !important;
   }
 }

@@ -42,12 +42,7 @@ export default function GridCell(props) {
   };
 
   const divRender = (
-    <div
-      className={`${styles.gridCellContainer} ${
-        submitAction ? '' : styles.notEditable
-      }`}
-      onClick={switchToEditMode}
-    >
+    <div className={styles.gridCellContainer} onClick={switchToEditMode}>
       <p className={styles.displayText} onMouseOver={displayTooltip}>
         {textValue}
       </p>

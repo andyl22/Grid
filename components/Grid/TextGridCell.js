@@ -1,3 +1,4 @@
+import styles from './TextGridCell.module.scss';
 import { useState } from 'react';
 import GridCell from './GridCell';
 
@@ -16,13 +17,15 @@ export default function TextGridCell(props) {
   };
 
   return (
-    <GridCell
-      gridEditElement={
-        <input value={gridValue} onChange={handleChange} autoFocus />
-      }
-      cancelAction={() => setGridValue(revertValue)}
-      submitAction={submitAction}
-      textValue={gridValue}
-    />
+    <div className={styles.textCell}>
+      <GridCell
+        gridEditElement={
+          <input value={gridValue} onChange={handleChange} autoFocus />
+        }
+        cancelAction={() => setGridValue(revertValue)}
+        submitAction={submitAction}
+        textValue={gridValue}
+      />
+    </div>
   );
 }

@@ -1,3 +1,4 @@
+import styles from './PicklistGridCell.module.scss';
 import { useState } from 'react';
 import GridCell from './GridCell';
 
@@ -23,16 +24,18 @@ export default function PicklistGridCell(props) {
   ));
 
   const selectInput = (
-    <select onChange={changeHandler} autoFocus>
+    <select onChange={changeHandler} autoFocus defaultValue={initialGridValue}>
       {mappedOptions}
     </select>
   );
 
   return (
-    <GridCell
-      gridEditElement={selectInput}
-      submitAction={submitAction}
-      textValue={gridValue}
-    />
+    <div className={styles.picklistCell}>
+      <GridCell
+        gridEditElement={selectInput}
+        submitAction={submitAction}
+        textValue={gridValue}
+      />
+    </div>
   );
 }

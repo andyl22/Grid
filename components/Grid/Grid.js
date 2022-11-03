@@ -3,7 +3,7 @@ import GridRow from './GridRow';
 import GridCell from './GridCell';
 import PicklistGridCell from './PicklistGridCell';
 import TextGridCell from './TextGridCell';
-import HeaderCell from './HeaderCell';
+import GridHeader from './GridHeader';
 
 export default function Grid() {
   /*
@@ -13,7 +13,7 @@ export default function Grid() {
       2. Resizing
       3. Sorting
   */
-  const columnData = [
+  const headerData = [
     {
       label: 'Test One',
       name: 'testFieldOne',
@@ -41,7 +41,7 @@ export default function Grid() {
       testFieldTwo: {
         value: 'Test 1-2',
         dataType: 'picklist',
-        options: ['Test', 'Not a Test', 'Picklist Stuff', 'Hello World']
+        options: ['Not a Test', 'Test 1-2', 'Picklist Stuff', 'Hello World']
       },
       testFieldThree: { value: 'Test 1-3', dataType: 'text' }
     },
@@ -51,7 +51,7 @@ export default function Grid() {
       testFieldTwo: {
         value: 'Test 2-2',
         dataType: 'picklist',
-        options: ['Test', 'Not a Test', 'Picklist Stuff', 'Hello World']
+        options: ['Test 2-2', 'Not a Test', 'Picklist Stuff', 'Hello World']
       },
       testFieldThree: { value: 'Test 2-3', dataType: 'text' }
     },
@@ -61,13 +61,13 @@ export default function Grid() {
       testFieldTwo: {
         value: 'Test 3-2',
         dataType: 'picklist',
-        options: ['Test', 'Not a Test', 'Picklist Stuff', 'Hello World']
+        options: ['Test 3-2', 'Not a Test', 'Picklist Stuff', 'Hello World']
       }
     }
   ];
 
   const mappedRow = rowData.map((row) => {
-    const mappedRowData = columnData.map((col) => {
+    const mappedRowData = headerData.map((col) => {
       if (!row[col.name]) return <GridCell key={`${col.name}_${row.id}`} />;
       switch (true) {
         case col.dataType === 'picklist':
@@ -92,13 +92,9 @@ export default function Grid() {
     return <GridRow key={row.id} gridCells={mappedRowData} />;
   });
 
-  const headerRow = columnData.map((column) => {
-    return <HeaderCell textValue={column.name} key={column.name} />;
-  });
-
   return (
     <div className={styles.gridContainer}>
-      <GridRow gridCells={headerRow} />
+      <GridHeader headerData={headerData} />
       {mappedRow}
     </div>
   );

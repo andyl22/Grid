@@ -1,0 +1,6 @@
+.textCell {
+  &:hover {
+    filter: brightness(80%);
+    cursor: cell;
+  }
+}

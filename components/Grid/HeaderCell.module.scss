@@ -1,0 +1,6 @@
+.headerCell {
+  &:hover {
+    cursor: grab;
+    filter: brightness(80%);
+  }
+}
