@@ -2,20 +2,27 @@ import styles from './HeaderCell.module.scss';
 import GridCell from './GridCell';
 
 export default function HeaderCell(props) {
-  const { textValue, order, dragStart, dragEnd } = props;
+  const { textValue, order, dragEnd } = props;
 
-  const initiateDrag = () => {
-    dragStart(order);
+  const initiateDrag = (e) => {
+    e.dataTransfer.setData('text/plain', order);
+    e.dataTransfer.effectAllowed = 'move';
   };
 
-  const endDrag = () => {
-    dragEnd(order);
+  const endDrag = (e) => {
+    dragEnd(e, order);
+  };
+
+  const dragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
   };
 
   return (
     <div
       className={styles.headerCell}
-      onDragEnter={endDrag}
+      onDragOver={dragOver}
+      onDrop={endDrag}
       onDragStart={initiateDrag}
       draggable
     >

@@ -1,0 +1,14 @@
+$primary-background-color: #0c1981;
+$secondary-background-color: rgba(248, 253, 254, 0.98);
+$border-color: #e0dfdb;
+$box-shadow: rgb(189, 189, 189);
+$dark-font-color: #2c0d0d;
+$light-font-color: white;
+$grid-border-color: rgb(168, 168, 168);
+
+// mq
+@mixin mobile-view {
+  @media (max-width: 600px) {
+    @content;
+  }
+}

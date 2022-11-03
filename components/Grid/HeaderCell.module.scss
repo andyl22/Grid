@@ -1,6 +1,8 @@
 .headerCell {
+  background: rgb(217, 219, 210) !important;
+  font-weight: 700;
   &:hover {
-    cursor: grab;
+    cursor: move;
     filter: brightness(80%);
   }
 }

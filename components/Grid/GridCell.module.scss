@@ -1,16 +1,15 @@
+@use '../../styles/variables' as s;
+
 .gridCellContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  border: 1px solid black;
-  border-left: none;
-  border-bottom: none;
   width: fit-content;
   width: 200px;
   min-height: 50px;
   padding: 0.5rem;
-  background: white;
+  border: 1px solid s.$grid-border-color;
   .displayText {
     padding: 0;
     overflow: hidden;
