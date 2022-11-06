@@ -1,8 +1,20 @@
 .headerCell {
   background: rgb(217, 219, 210) !important;
   font-weight: 700;
+  position: relative;
   &:hover {
-    cursor: move;
+    cursor: grab;
     filter: brightness(80%);
+  }
+  .sortButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    color: black;
+    border: none;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }

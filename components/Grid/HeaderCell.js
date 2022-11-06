@@ -1,8 +1,9 @@
 import styles from './HeaderCell.module.scss';
+import SortIcon from '@mui/icons-material/Sort';
 import GridCell from './GridCell';
 
 export default function HeaderCell(props) {
-  const { textValue, order, dragEnd } = props;
+  const { fieldData, order, dragEnd, sortByField } = props;
 
   const initiateDrag = (e) => {
     e.dataTransfer.setData('text/plain', order);
@@ -18,6 +19,10 @@ export default function HeaderCell(props) {
     e.stopPropagation();
   };
 
+  const sortByCol = () => {
+    sortByField(fieldData.name);
+  };
+
   return (
     <div
       className={styles.headerCell}
@@ -26,7 +31,10 @@ export default function HeaderCell(props) {
       onDragStart={initiateDrag}
       draggable
     >
-      <GridCell textValue={textValue} />
+      <GridCell textValue={fieldData.label} />
+      <button className={styles.sortButton} onClick={sortByCol}>
+        <SortIcon fontSize="small" />
+      </button>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import styles from './GridHeader.module.scss';
 import HeaderCell from './HeaderCell';
 
 export default function GridHeader(props) {
-  const { headerData, setHeaderData } = props;
+  const { headerData, setHeaderData, sortByField } = props;
 
   /*  
     Store the start position, allowing users to start dragging.
@@ -19,10 +19,11 @@ export default function GridHeader(props) {
 
   const mappedHeadercells = headerData.map((column, index) => (
     <HeaderCell
-      textValue={column.label}
+      fieldData={column}
       key={column.name}
       order={index}
       dragEnd={dragEnd}
+      sortByField={sortByField}
     />
   ));
 
