@@ -16,6 +16,12 @@ export default function Grid() {
   */
   const [headerData, setHeaderData] = useState([
     {
+      label: 'ID',
+      name: 'id',
+      dataType: 'text',
+      colWidth: '200px'
+    },
+    {
       label: 'Test One',
       name: 'testFieldOne',
       dataType: 'text',
@@ -55,7 +61,7 @@ export default function Grid() {
 
   const [rowData, setRowData] = useState([
     {
-      id: 1,
+      id: 4,
       testFieldOne: { value: 'Test 1-1', dataType: 'text' },
       testFieldTwo: {
         value: 'Test 1-2',
@@ -94,15 +100,19 @@ export default function Grid() {
     }
   ]);
 
-  const sortByField = (fieldName) => {
+  const sortByField = (fieldName, ascending) => {
     setRowData([
       ...rowData.sort((a, b) => {
         if (!a[fieldName]) return -1;
         if (!b[fieldName]) return 1;
-        const fieldOne = a[fieldName].value;
-        const fieldTwo = b[fieldName].value;
+        const fieldOne = fieldName === 'id' ? a.id : a[fieldName].value;
+        const fieldTwo = fieldName === 'id' ? b.id : b[fieldName].value;
         if (fieldOne === fieldTwo) return 0;
-        return fieldOne < fieldTwo ? 1 : -1;
+        if (ascending) {
+          return fieldOne < fieldTwo ? 1 : -1;
+        } else {
+          return fieldOne > fieldTwo ? 1 : -1;
+        }
       })
     ]);
   };
@@ -123,7 +133,7 @@ export default function Grid() {
           return (
             <TextGridCell
               key={`${col.name}_${row.id}`}
-              initialGridValue={row[col.name].value}
+              initialGridValue={row[col.name].value || row.id}
             />
           );
         default:
