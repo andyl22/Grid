@@ -1,7 +1,7 @@
 .picklistCell {
   background: white;
   &:hover {
-    filter: brightness(80%);
+    background: rgb(219, 219, 219);
     cursor: cell;
   }
 }

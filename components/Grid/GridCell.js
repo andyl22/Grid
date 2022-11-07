@@ -31,8 +31,7 @@ export default function GridCell(props) {
 
   const displayTooltip = (e) => {
     const target = e.target;
-    if (target.offsetWidth < target.scrollWidth) setEnableTooltip(true);
-
+    if (target.offsetHeight < target.scrollHeight) setEnableTooltip(true);
     // hide tooltip on mouseleave. fires once then the event listener is discardded
     target.parentNode.addEventListener(
       'mouseleave',

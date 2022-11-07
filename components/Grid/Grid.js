@@ -163,6 +163,7 @@ export default function Grid() {
               key={`${col.name}_${row.id}`}
               initialGridValue={row[col.name].value}
               options={row[col.name].options}
+              fieldData={{ objID: row.id, fieldName: col.name }}
             />
           );
         case col.dataType === 'text':
@@ -170,6 +171,7 @@ export default function Grid() {
             <TextGridCell
               key={`${col.name}_${row.id}`}
               initialGridValue={row[col.name].value || row.id}
+              fieldData={{ objID: row.id, fieldName: col.name }}
             />
           );
         default:
