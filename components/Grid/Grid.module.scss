@@ -1,8 +1,9 @@
 .gridContainer {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  background: white;
-  color: black;
-  overflow-x: auto;
+  padding: 0.5rem;
+  .grid {
+    overflow-x: auto;
+    background: white;
+    color: black;
+    border-radius: 0.5rem;
+  }
 }

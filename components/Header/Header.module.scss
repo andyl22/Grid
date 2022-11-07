@@ -1,7 +1,7 @@
 @keyframes fadeIn {
   0% {
-    opacity: 0%;
-    transform: scaleY(50%);
+    opacity: 80%;
+    transform: scaleY(90%);
   }
   100% {
     opacity: 100%;
@@ -25,7 +25,7 @@
   white-space: nowrap;
   color: black;
   background: white;
-  animation: fadeIn 0.5s ease-out;
+  animation: fadeIn 1s ease-out;
   transform-origin: top;
   a,
   button {

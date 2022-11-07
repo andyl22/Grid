@@ -4,7 +4,7 @@ import GridCell from './GridCell';
 import PicklistGridCell from './PicklistGridCell';
 import TextGridCell from './TextGridCell';
 import GridHeader from './GridHeader';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function Grid() {
   /*
@@ -197,12 +197,14 @@ export default function Grid() {
 
   return (
     <div className={styles.gridContainer}>
-      <GridHeader
-        headerData={headerData}
-        setHeaderData={setHeaderData}
-        sortByField={sortByField}
-      />
-      {mappedRow}
+      <div className={styles.grid}>
+        <GridHeader
+          headerData={headerData}
+          setHeaderData={setHeaderData}
+          sortByField={sortByField}
+        />
+        {mappedRow}
+      </div>
     </div>
   );
 }
