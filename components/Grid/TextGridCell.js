@@ -3,12 +3,12 @@ import { useState } from 'react';
 import GridCell from './GridCell';
 
 export default function TextGridCell(props) {
-  const { initialGridValue, fieldData } = props;
+  const { initialGridValue, updateGridData, fieldData } = props;
   const [revertValue, setRevertValue] = useState('Test');
   const [gridValue, setGridValue] = useState(initialGridValue);
 
   const submitAction = () => {
-    console.log(fieldData);
+    updateGridData(fieldData.objID, fieldData.fieldName, gridValue);
     setRevertValue(gridValue);
   };
 

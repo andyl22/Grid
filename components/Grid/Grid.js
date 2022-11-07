@@ -4,7 +4,7 @@ import GridCell from './GridCell';
 import PicklistGridCell from './PicklistGridCell';
 import TextGridCell from './TextGridCell';
 import GridHeader from './GridHeader';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Grid() {
   /*
@@ -137,10 +137,11 @@ export default function Grid() {
   ]);
 
   const sortByField = (fieldName, ascending) => {
-    setRowData([
-      ...rowData.sort((a, b) => {
-        if (!a[fieldName]) return -1;
-        if (!b[fieldName]) return 1;
+    const copyOfRowData = [...rowData];
+    setRowData(
+      copyOfRowData.sort((a, b) => {
+        if (!a[fieldName]) return 1;
+        if (!b[fieldName]) return -1;
         const fieldOne = fieldName === 'id' ? a.id : a[fieldName].value;
         const fieldTwo = fieldName === 'id' ? b.id : b[fieldName].value;
         if (fieldOne === fieldTwo) return 0;
@@ -150,6 +151,18 @@ export default function Grid() {
           return fieldOne > fieldTwo ? 1 : -1;
         }
       })
+    );
+  };
+
+  const updateGridData = (id, fieldName, newValue) => {
+    const arrayIndex = rowData.findIndex((obj) => obj.id === id);
+    setRowData([
+      ...rowData.slice(0, arrayIndex),
+      {
+        ...rowData[arrayIndex],
+        [fieldName]: { ...rowData[arrayIndex][fieldName], value: newValue }
+      },
+      ...rowData.slice(arrayIndex + 1)
     ]);
   };
 
@@ -172,6 +185,7 @@ export default function Grid() {
               key={`${col.name}_${row.id}`}
               initialGridValue={row[col.name].value || row.id}
               fieldData={{ objID: row.id, fieldName: col.name }}
+              updateGridData={updateGridData}
             />
           );
         default:
