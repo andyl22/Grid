@@ -12,10 +12,11 @@ export default function Grid() {
   // TBD: Grid Resizing
   const [headerData, setHeaderData] = useState(colData);
   const [recordData, setRecordData] = useState(objData);
-  const [rowData, setRowData] = useState(recordData.slice(0, 29));
+  const [rowData, setRowData] = useState();
   const observerRef = useRef();
 
   /* 
+  Observes the last element when the row data changes.
   Using threshold 0.01 because a high threshold value
   would never fire because of the potentially long horizontal axis.
   Instead, this will fire when a glimpse of the row is scrolled onto.
@@ -24,11 +25,12 @@ export default function Grid() {
     const options = {
       root: null,
       rootMargin: '5px',
-      threshold: 0.01
+      threshold: 0.02
     };
 
     const observerCallback = (entries) => {
       if (!entries) return;
+      console.log(entries);
       if (entries[0].isIntersecting) {
         console.log('Executioner');
       }
@@ -40,6 +42,12 @@ export default function Grid() {
 
     observer.observe(observerTarget);
     return () => observer.unobserve(observerTarget);
+  }, [rowData]);
+
+  // Pass initial data to render
+  useEffect(() => {
+    setRecordData(recordData.slice(29));
+    setRowData(recordData.slice(0, 29));
   }, []);
 
   // passed to header cells to fire a sort operation onClick
@@ -75,41 +83,44 @@ export default function Grid() {
   };
 
   // maps data into the appropriate cell type based on the field's data type attribute
-  const mappedRow = rowData.map((row) => {
-    const mappedRowData = headerData
-      .filter((col) => col.display)
-      .map((col) => {
-        if (!col.display) return;
-        if (!row[col.name]) return <GridCell key={`${col.name}_${row.id}`} />;
-        switch (true) {
-          case col.name === 'id':
-            return (
-              <GridCell key={`${col.name}_${row.id}`} textValue={row.id} />
-            );
-          case col.dataType === 'picklist':
-            return (
-              <PicklistGridCell
-                key={`${col.name}_${row.id}`}
-                initialGridValue={row[col.name].value}
-                options={row[col.name].options}
-                fieldData={{ objID: row.id, fieldName: col.name }}
-              />
-            );
-          case col.dataType === 'text':
-            return (
-              <TextGridCell
-                key={`${col.name}_${row.id}`}
-                initialGridValue={row[col.name].value}
-                fieldData={{ objID: row.id, fieldName: col.name }}
-                updateGridData={updateGridData}
-              />
-            );
-          default:
-            return <GridCell textValue={row[col.name].value} />;
-        }
-      });
-    return <GridRow key={row.id} gridCells={mappedRowData} />;
-  });
+  const mappedRow = rowData
+    ? rowData.map((row) => {
+        const mappedRowData = headerData
+          .filter((col) => col.display)
+          .map((col) => {
+            if (!col.display) return;
+            if (!row[col.name])
+              return <GridCell key={`${col.name}_${row.id}`} />;
+            switch (true) {
+              case col.name === 'id':
+                return (
+                  <GridCell key={`${col.name}_${row.id}`} textValue={row.id} />
+                );
+              case col.dataType === 'picklist':
+                return (
+                  <PicklistGridCell
+                    key={`${col.name}_${row.id}`}
+                    initialGridValue={row[col.name].value}
+                    options={row[col.name].options}
+                    fieldData={{ objID: row.id, fieldName: col.name }}
+                  />
+                );
+              case col.dataType === 'text':
+                return (
+                  <TextGridCell
+                    key={`${col.name}_${row.id}`}
+                    initialGridValue={row[col.name].value}
+                    fieldData={{ objID: row.id, fieldName: col.name }}
+                    updateGridData={updateGridData}
+                  />
+                );
+              default:
+                return <GridCell textValue={row[col.name].value} />;
+            }
+          });
+        return <GridRow key={row.id} gridCells={mappedRowData} />;
+      })
+    : null;
 
   return (
     <div className={styles.gridContainer}>
