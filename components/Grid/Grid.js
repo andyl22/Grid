@@ -5,141 +5,19 @@ import PicklistGridCell from './PicklistGridCell';
 import TextGridCell from './TextGridCell';
 import GridHeader from './GridHeader';
 import { useState } from 'react';
+import colData from '../../TestData/colData';
+import objData from '../../TestData/objData';
 
 export default function Grid() {
-  /*
-    Grid shouuld support:
-      4. Data should display data in the correct columns, first and foremost
-      1. Reordering
-      2. Resizing
-      3. Sorting
-  */
-  const [headerData, setHeaderData] = useState([
-    {
-      label: 'ID',
-      name: 'id',
-      dataType: 'text',
-      colWidth: '200px'
-    },
-    {
-      label: 'Test One',
-      name: 'testFieldOne',
-      dataType: 'text',
-      colWidth: '200px'
-    },
-    {
-      label: 'Test Two',
-      name: 'testFieldTwo',
-      dataType: 'picklist',
-      colWidth: '300px'
-    },
-    {
-      label: 'Test Three',
-      name: 'testFieldThree',
-      dataType: 'text',
-      colWidth: '250px'
-    },
-    {
-      label: 'Test Four',
-      name: 'testFieldFour',
-      dataType: 'text',
-      colWidth: '250px'
-    },
-    {
-      label: 'Test Five',
-      name: 'testFieldFive',
-      dataType: 'text',
-      colWidth: '250px'
-    },
-    {
-      label: 'Test Six',
-      name: 'testFieldSix',
-      dataType: 'text',
-      colWidth: '250px'
-    }
-  ]);
+  // TBD: Grid Resizing
+  const [headerData, setHeaderData] = useState(colData);
 
-  const [rowData, setRowData] = useState([
-    {
-      id: 4,
-      testFieldOne: { value: 'Test 1-1', dataType: 'text' },
-      testFieldTwo: {
-        value: 'Test 1-2',
-        dataType: 'picklist',
-        options: ['Not a Test', 'Test 1-2', 'Picklist Stuff', 'Hello World']
-      },
-      testFieldThree: { value: 'Test 1-3', dataType: 'text' },
-      testFieldFour: { value: 'Test 1-3', dataType: 'text' },
-      testFieldFive: { value: 'Test 1-3', dataType: 'text' },
-      testFieldSix: { value: 'Test 1-3', dataType: 'text' }
-    },
-    {
-      id: 2,
-      testFieldOne: { value: 'Test 2-1', dataType: 'text' },
-      testFieldTwo: {
-        value: 'Test 2-2',
-        dataType: 'picklist',
-        options: ['Test 2-2', 'Not a Test', 'Picklist Stuff', 'Hello World']
-      },
-      testFieldThree: { value: 'Test 2-3', dataType: 'text' },
-      testFieldFour: { value: 'Test 2-4', dataType: 'text' },
-      testFieldFive: { value: 'Test 2-5', dataType: 'text' },
-      testFieldSix: { value: 'Test 2-6', dataType: 'text' }
-    },
-    {
-      id: 3,
-      testFieldOne: { value: 'Test 3-1', dataType: 'text' },
-      testFieldTwo: {
-        value: 'Test 3-2',
-        dataType: 'picklist',
-        options: ['Test 3-2', 'Not a Test', 'Picklist Stuff', 'Hello World']
-      },
-      testFieldFour: { value: 'Test 3-3', dataType: 'text' },
-      testFieldFive: { value: 'Test 3-4', dataType: 'text' }
-    },
-    {
-      id: 5,
-      testFieldOne: { value: 'Test 5-1', dataType: 'text' },
-      testFieldTwo: {
-        value: 'Test 5-2',
-        dataType: 'picklist',
-        options: ['Test 5-2', 'Not a Test', 'Picklist Stuff', 'Hello World']
-      },
-      testFieldThree: { value: 'Test 5-3', dataType: 'text' },
-      testFieldFive: { value: 'Test 5-5', dataType: 'text' },
-      testFieldSix: { value: 'Test 5-6', dataType: 'text' }
-    },
-    {
-      id: 6,
-      testFieldOne: { value: 'Test 6-1', dataType: 'text' },
-      testFieldTwo: {
-        value: 'Test 6-2',
-        dataType: 'picklist',
-        options: ['Test 6-2', 'Not a Test', 'Picklist Stuff', 'Hello World']
-      },
-      testFieldThree: { value: 'Test 6-3', dataType: 'text' },
-      testFieldFive: { value: 'Test 6-5', dataType: 'text' },
-      testFieldSix: { value: 'Test 6-6', dataType: 'text' }
-    },
-    {
-      id: 7,
-      testFieldOne: { value: 'Test 7-1', dataType: 'text' },
-      testFieldTwo: {
-        value: 'Test 7-2',
-        dataType: 'picklist',
-        options: ['Test 7-2', 'Not a Test', 'Picklist Stuff', 'Hello World']
-      },
-      testFieldThree: { value: 'Test 7-3', dataType: 'text' },
-      testFieldFour: { value: 'Test 7-4', dataType: 'text' },
-      testFieldFive: { value: 'Test 7-5', dataType: 'text' },
-      testFieldSix: { value: 'Test 7-6', dataType: 'text' }
-    }
-  ]);
+  const [rowData, setRowData] = useState(objData);
 
+  // passed to header cells to fire a sort operation onClick
   const sortByField = (fieldName, ascending) => {
-    const copyOfRowData = [...rowData];
-    setRowData(
-      copyOfRowData.sort((a, b) => {
+    setRowData([
+      ...rowData.sort((a, b) => {
         if (!a[fieldName]) return 1;
         if (!b[fieldName]) return -1;
         const fieldOne = fieldName === 'id' ? a.id : a[fieldName].value;
@@ -151,9 +29,11 @@ export default function Grid() {
           return fieldOne > fieldTwo ? 1 : -1;
         }
       })
-    );
+    ]);
   };
 
+  // passed to cells that support edit to fire an update on the grid. Required to ensure sorting works as expected
+  // should probably move this data to a global state instead of storing it in a component...
   const updateGridData = (id, fieldName, newValue) => {
     const arrayIndex = rowData.findIndex((obj) => obj.id === id);
     setRowData([
@@ -166,10 +46,13 @@ export default function Grid() {
     ]);
   };
 
+  // maps data into the appropriate cell type based on the field's data type attribute
   const mappedRow = rowData.map((row) => {
     const mappedRowData = headerData.map((col) => {
       if (!row[col.name]) return <GridCell key={`${col.name}_${row.id}`} />;
       switch (true) {
+        case col.name === 'id':
+          return <GridCell textValue={row.id} />;
         case col.dataType === 'picklist':
           return (
             <PicklistGridCell
@@ -183,13 +66,13 @@ export default function Grid() {
           return (
             <TextGridCell
               key={`${col.name}_${row.id}`}
-              initialGridValue={row[col.name].value || row.id}
+              initialGridValue={row[col.name].value}
               fieldData={{ objID: row.id, fieldName: col.name }}
               updateGridData={updateGridData}
             />
           );
         default:
-          return;
+          return <GridCell textValue={row[col.name].value} />;
       }
     });
     return <GridRow key={row.id} gridCells={mappedRowData} />;

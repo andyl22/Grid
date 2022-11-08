@@ -1,6 +1,7 @@
 import styles from './GridHeader.module.scss';
 import { useState } from 'react';
 import HeaderCell from './HeaderCell';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function GridHeader(props) {
   const { headerData, setHeaderData, sortByField } = props;
@@ -20,12 +21,28 @@ export default function GridHeader(props) {
     setHeaderData(dataCopy);
   };
 
-  // The grid header controls header cell rendering,
-  // so the determination of which header cell is currently used for sorting is controlled here
+  // The grid header controls header cell rendering
+  // Determination of which header cell is sorting the rows
   const [activeSort, setActiveSort] = useState(headerData[0].name);
 
   const updateActiveSort = (colName) => {
     setActiveSort(colName);
+  };
+
+  // cell management - add or delete columns
+  const addColumn = () => {
+    // allow user to select an available field to display
+    const newColumn = {
+      label: 'Test Six',
+      name: 'testFieldSix',
+      dataType: 'text',
+      colWidth: '250px'
+    };
+    setHeaderData([...headerData, newColumn]);
+  };
+
+  const deleteColumn = (index) => {
+    setHeaderData([...headerData].splice(index, 1));
   };
 
   const mappedHeadercells = headerData.map((column, index) => (
@@ -37,8 +54,16 @@ export default function GridHeader(props) {
       sortByField={sortByField}
       isSorting={activeSort === column.name}
       updateActiveSort={updateActiveSort}
+      deleteColumn={deleteColumn}
     />
   ));
 
-  return <div className={styles.headerRow}>{mappedHeadercells}</div>;
+  return (
+    <div className={styles.headerRow}>
+      {mappedHeadercells}
+      <button className={styles.addColButton} onClick={addColumn}>
+        <AddIcon />
+      </button>
+    </div>
+  );
 }
