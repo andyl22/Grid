@@ -23,7 +23,7 @@ export default function GridHeader(props) {
 
   // The grid header controls header cell rendering
   // Determination of which header cell is sorting the rows
-  const [activeSort, setActiveSort] = useState(headerData[0].name);
+  const [activeSort, setActiveSort] = useState();
 
   const updateActiveSort = (colName) => {
     setActiveSort(colName);

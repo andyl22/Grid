@@ -15,15 +15,19 @@ export default function Grid() {
   const [rowData, setRowData] = useState(recordData.slice(0, 29));
   const observerRef = useRef();
 
+  /* 
+  Using threshold 0.01 because a high threshold value
+  would never fire because of the potentially long horizontal axis.
+  Instead, this will fire when a glimpse of the row is scrolled onto.
+  */
   useEffect(() => {
     const options = {
       root: null,
-      rootMargin: '0px',
-      threshold: 0.1
+      rootMargin: '5px',
+      threshold: 0.01
     };
 
     const observerCallback = (entries) => {
-      console.log(entries);
       if (!entries) return;
       if (entries[0].isIntersecting) {
         console.log('Executioner');
