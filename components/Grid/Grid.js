@@ -52,7 +52,7 @@ export default function Grid() {
       if (!row[col.name]) return <GridCell key={`${col.name}_${row.id}`} />;
       switch (true) {
         case col.name === 'id':
-          return <GridCell textValue={row.id} />;
+          return <GridCell key={`${col.name}_${row.id}`} textValue={row.id} />;
         case col.dataType === 'picklist':
           return (
             <PicklistGridCell
