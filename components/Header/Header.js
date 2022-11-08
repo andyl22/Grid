@@ -9,6 +9,7 @@ export default function Header() {
   useEffect(() => {
     let throttle;
     const handleScroll = () => {
+      if (window.scrollY === 0) throttle = false;
       if (throttle) return;
       // negative check for Safari overscroll
       if (window.scrollY > lastScroll.current && window.scrollY > 0) {

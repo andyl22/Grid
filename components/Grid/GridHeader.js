@@ -32,6 +32,8 @@ export default function GridHeader(props) {
   // cell management - add or delete columns
   const addColumn = () => {
     // allow user to select an available field to display
+    // add modal with select options for cols that have !col.display
+    alert(headerData.filter((col) => !col.display));
     const newColumn = {
       label: 'Test Six',
       name: 'testFieldSix',
@@ -45,18 +47,20 @@ export default function GridHeader(props) {
     setHeaderData([...headerData].splice(index, 1));
   };
 
-  const mappedHeadercells = headerData.map((column, index) => (
-    <HeaderCell
-      fieldData={column}
-      key={column.name}
-      order={index}
-      dragEnd={dragEnd}
-      sortByField={sortByField}
-      isSorting={activeSort === column.name}
-      updateActiveSort={updateActiveSort}
-      deleteColumn={deleteColumn}
-    />
-  ));
+  const mappedHeadercells = headerData
+    .filter((column) => column.display)
+    .map((column, index) => (
+      <HeaderCell
+        fieldData={column}
+        key={column.name}
+        order={index}
+        dragEnd={dragEnd}
+        sortByField={sortByField}
+        isSorting={activeSort === column.name}
+        updateActiveSort={updateActiveSort}
+        deleteColumn={deleteColumn}
+      />
+    ));
 
   return (
     <div className={styles.headerRow}>
