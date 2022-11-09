@@ -17,14 +17,16 @@ export default function Grid() {
 
   /* 
   Observes the last element when the row data changes.
-  Using threshold 0.01 because a high threshold value
-  would never fire because of the potentially long horizontal axis.
-  Instead, this will fire when a glimpse of the row is scrolled onto.
-
-  NEED TO FIGURE OUT HOW TO SORT DATA ON OBSERVER CALLBACK
+  Using threshold 0.01 due to horizontal width of the rows not fulfilling threshold conditions.
+  Recreates the observer object and assigns its to new data whenever rowData (rendered rows) are updated.
+  Instead of recreating the observer each time, could instead do some sort of observer target update
+  for minor optimization.
   */
   useEffect(() => {
+    if (!recordData) return;
+    // Don't recreate the observer if there are no records available
     if (recordData.length === 0) return;
+    const observerTarget = observerRef.current.lastChild;
     const options = {
       root: null,
       rootMargin: '5px',
@@ -32,21 +34,18 @@ export default function Grid() {
     };
 
     const observerCallback = (entries) => {
-      if (!entries) return;
       if (entries[0].isIntersecting) {
         if (recordData.length > 29) {
           setRowData([...rowData, recordData.slice(0, 29)]);
-          setRecordData([]);
+          setRecordData(recordData.slice(29));
         } else {
           setRowData([...rowData, ...recordData]);
-          setRecordData(recordData.slice(29));
+          setRecordData([]);
         }
       }
     };
 
     const observer = new IntersectionObserver(observerCallback, options);
-
-    const observerTarget = observerRef.current.lastChild;
 
     observer.observe(observerTarget);
     return () => observer.unobserve(observerTarget);
