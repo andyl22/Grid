@@ -11,8 +11,8 @@ import objData from '../../TestData/objData';
 export default function Grid() {
   // TBD: Grid Resizing
   const [headerData, setHeaderData] = useState(colData);
-  const [recordData, setRecordData] = useState(objData);
-  const [rowData, setRowData] = useState();
+  const [recordData, setRecordData] = useState(objData.slice(29));
+  const [rowData, setRowData] = useState(objData.slice(0, 29));
   const observerRef = useRef();
 
   /* 
@@ -20,8 +20,11 @@ export default function Grid() {
   Using threshold 0.01 because a high threshold value
   would never fire because of the potentially long horizontal axis.
   Instead, this will fire when a glimpse of the row is scrolled onto.
+
+  NEED TO FIGURE OUT HOW TO SORT DATA ON OBSERVER CALLBACK
   */
   useEffect(() => {
+    if (recordData.length === 0) return;
     const options = {
       root: null,
       rootMargin: '5px',
@@ -30,9 +33,14 @@ export default function Grid() {
 
     const observerCallback = (entries) => {
       if (!entries) return;
-      console.log(entries);
       if (entries[0].isIntersecting) {
-        console.log('Executioner');
+        if (recordData.length > 29) {
+          setRowData([...rowData, recordData.slice(0, 29)]);
+          setRecordData([]);
+        } else {
+          setRowData([...rowData, ...recordData]);
+          setRecordData(recordData.slice(29));
+        }
       }
     };
 
@@ -46,8 +54,8 @@ export default function Grid() {
 
   // Pass initial data to render
   useEffect(() => {
-    setRecordData(recordData.slice(29));
-    setRowData(recordData.slice(0, 29));
+    // setRecordData(recordData.slice(29));
+    // setRowData(recordData.slice(0, 29));
   }, []);
 
   // passed to header cells to fire a sort operation onClick
