@@ -108,8 +108,9 @@ export default function Grid() {
                   <PicklistGridCell
                     key={`${col.name}_${row.id}`}
                     initialGridValue={row[col.name].value}
-                    options={row[col.name].options}
                     fieldData={{ objID: row.id, fieldName: col.name }}
+                    updateGridData={updateGridData}
+                    options={row[col.name].options}
                   />
                 );
               case col.dataType === 'text':

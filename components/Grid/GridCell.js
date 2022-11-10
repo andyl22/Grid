@@ -49,9 +49,20 @@ export default function GridCell(props) {
     </div>
   );
 
+  const submitEdit = (e) => {
+    saveEdits(e);
+  };
+
   const editRender = (
-    <div className={`${styles.gridCellContainer} ${styles.gridEditMode}`}>
-      <form onKeyDown={cancelEdit} onSubmit={saveEdits}>
+    <div
+      className={`${styles.gridCellContainer} ${styles.gridEditMode}`}
+      onClick={submitEdit}
+    >
+      <form
+        onKeyDown={cancelEdit}
+        onSubmit={saveEdits}
+        onClick={(e) => e.stopPropagation()}
+      >
         {gridEditElement}
       </form>
     </div>
