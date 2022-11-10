@@ -1,4 +1,14 @@
 .gridRow {
   display: flex;
   width: fit-content;
+  position: relative;
+  .dragButton {
+    right: 100%;
+    position: absolute;
+    height: 100%;
+    &:hover {
+      cursor: grab;
+      filter: brightness(70%);
+    }
+  }
 }

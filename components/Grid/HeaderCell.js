@@ -7,6 +7,9 @@ export default function HeaderCell(props) {
   const {
     fieldData,
     order,
+    initDragOver,
+    dragOver,
+    dragDrop,
     dragEnd,
     sortByField,
     isSorting,
@@ -38,33 +41,41 @@ export default function HeaderCell(props) {
   The order attribute is retrieved when the drag ends through the event details
   */
   const initiateDrag = (e) => {
+    initDragOver(order);
     e.dataTransfer.setData('text/plain', order);
     e.dataTransfer.effectAllowed = 'move';
   };
 
-  const endDrag = (e) => {
-    dragEnd(e, order);
+  const handleDragDrop = (e) => {
+    dragDrop(e, order);
   };
 
   // Prevent the drag over from overriding the drag drop action from the dragEnd function from the props
-  const dragOver = (e) => {
+  const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    dragOver(order);
+  };
+
+  const handleDragEnd = () => {
+    dragEnd();
   };
 
   return (
     <div
-      className={styles.headerCell}
-      onDragOver={dragOver}
-      onDrop={endDrag}
+      className={`${styles.headerCell}`}
       onDragStart={initiateDrag}
+      onDragOver={handleDragOver}
+      onDrop={handleDragDrop}
+      onDragEnd={handleDragEnd}
       draggable
     >
       <GridCell textValue={fieldData.label} />
       <button
         className={`${styles.sortButton} ${
           isSorting && styles.highlightButton
-        } ${sortAsc && styles.flipButton}`}
+        } ${sortAsc && styles.flipButton}
+        `}
         onClick={sortByCol}
       >
         <SortIcon fontSize="small" />

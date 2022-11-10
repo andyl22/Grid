@@ -5,6 +5,8 @@ import AddIcon from '@mui/icons-material/Add';
 
 export default function GridHeader(props) {
   const { headerData, setHeaderData, sortByField } = props;
+  const [backupHeaderData, setBackupHeaderData] = useState(headerData);
+  const [tempDragPos, setTempDragPos] = useState();
 
   /*  
     Store the start position, allowing users to start dragging.
@@ -13,12 +15,29 @@ export default function GridHeader(props) {
 
   // Cut and splice data into a copy of the header data to re-order.
   // Set the header using the prop passed from the grid container.
-  const dragEnd = (e, endPos) => {
-    const startPos = e.dataTransfer.getData('text/plain');
+  const dragOver = (curPos) => {
+    if (tempDragPos === curPos) return;
     const dataCopy = [...headerData];
-    const startData = dataCopy.splice(startPos, 1)[0];
-    dataCopy.splice(endPos, 0, startData);
+    const startData = dataCopy.splice(tempDragPos, 1)[0];
+    dataCopy.splice(curPos, 0, startData);
+    setTempDragPos(curPos);
     setHeaderData(dataCopy);
+  };
+
+  /* Drag end will fire first and clear the temp drag position 
+  as long as the drag drop is on a valid position. */
+  const dragDrop = () => {
+    setTempDragPos();
+    setBackupHeaderData(headerData);
+  };
+
+  /* Restore to the original data pre-drag and drop initiation if tempDragPos
+  because this indicates the drop was in an invalid zone, since dragDrop never fires */
+  const dragEnd = () => {
+    if (tempDragPos) {
+      setHeaderData(backupHeaderData);
+      setTempDragPos();
+    }
   };
 
   // The grid header controls header cell rendering
@@ -54,6 +73,9 @@ export default function GridHeader(props) {
         fieldData={column}
         key={column.name}
         order={index}
+        initDragOver={setTempDragPos}
+        dragOver={dragOver}
+        dragDrop={dragDrop}
         dragEnd={dragEnd}
         sortByField={sortByField}
         isSorting={activeSort === column.name}
