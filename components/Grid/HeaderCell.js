@@ -11,6 +11,8 @@ export default function HeaderCell(props) {
     dragOver,
     dragDrop,
     dragEnd,
+    dragActive,
+    setDragActive,
     sortByField,
     isSorting,
     updateActiveSort
@@ -18,6 +20,7 @@ export default function HeaderCell(props) {
 
   // Column sorting logic
   const [sortAsc, setSortAsc] = useState(undefined);
+  const [isDragging, setIsDragging] = useState(false);
 
   const sortByCol = () => {
     sortByField(fieldData.name, sortAsc);
@@ -41,6 +44,8 @@ export default function HeaderCell(props) {
   The order attribute is retrieved when the drag ends through the event details
   */
   const initiateDrag = (e) => {
+    setDragActive(true);
+    setIsDragging(true);
     initDragOver(order);
     e.dataTransfer.setData('text/plain', order);
     e.dataTransfer.effectAllowed = 'move';
@@ -58,12 +63,14 @@ export default function HeaderCell(props) {
   };
 
   const handleDragEnd = () => {
+    setDragActive(false);
+    setIsDragging(false);
     dragEnd();
   };
 
   return (
     <div
-      className={`${styles.headerCell}`}
+      className={styles.headerCell}
       onDragStart={initiateDrag}
       onDragOver={handleDragOver}
       onDrop={handleDragDrop}
@@ -74,12 +81,13 @@ export default function HeaderCell(props) {
       <button
         className={`${styles.sortButton} ${
           isSorting && styles.highlightButton
-        } ${sortAsc && styles.flipButton}
-        `}
+        } ${sortAsc && styles.flipButton}`}
         onClick={sortByCol}
       >
         <SortIcon fontSize="small" />
       </button>
+      {isDragging && <span className={styles.isDragging} />}
+      {dragActive && <span className={styles.dragTarget} />}
     </div>
   );
 }

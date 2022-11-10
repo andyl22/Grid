@@ -7,6 +7,7 @@ export default function GridHeader(props) {
   const { headerData, setHeaderData, sortByField } = props;
   const [backupHeaderData, setBackupHeaderData] = useState(headerData);
   const [tempDragPos, setTempDragPos] = useState();
+  const [dragActive, setDragActive] = useState(false);
 
   /*  
     Store the start position, allowing users to start dragging.
@@ -77,6 +78,8 @@ export default function GridHeader(props) {
         dragOver={dragOver}
         dragDrop={dragDrop}
         dragEnd={dragEnd}
+        dragActive={dragActive}
+        setDragActive={setDragActive}
         sortByField={sortByField}
         isSorting={activeSort === column.name}
         updateActiveSort={updateActiveSort}

@@ -50,7 +50,7 @@ export default function GridCell(props) {
   );
 
   const editRender = (
-    <div className={styles.gridCellContainer}>
+    <div className={`${styles.gridCellContainer} ${styles.gridEditMode}`}>
       <form onKeyDown={cancelEdit} onSubmit={saveEdits}>
         {gridEditElement}
       </form>
