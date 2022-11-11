@@ -1,11 +1,10 @@
-const ghPages = process.env.DEPLOY_TARGET === 'gh-pages';
+const isProd = process.env.NODE_ENV === 'production';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true
+  swcMinify: true,
+  assetPrefix: isProd ? 'https://andyl22.github.io/' : undefined
 };
 
-module.exports = {
-  assetPrefix: ghPages ? 'https://andyl22.github.io/' : nextConfig
-};
+module.exports = nextConfig;
