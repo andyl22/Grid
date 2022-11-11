@@ -4,7 +4,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  assetPrefix: isProd ? 'https://andyl22.github.io/grid/' : undefined
+  assetPrefix: isProd ? 'https://andyl22.github.io/Grid/' : undefined
 };
 
 module.exports = nextConfig;
