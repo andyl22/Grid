@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 const isProd = process.env.NODE_ENV === 'production';
 
 /** @type {import('next').NextConfig} */
@@ -7,4 +8,4 @@ const nextConfig = {
   assetPrefix: isProd ? 'https://andyl22.github.io/Grid/' : undefined
 };
 
-module.exports = nextConfig;
+export default nextConfig;
