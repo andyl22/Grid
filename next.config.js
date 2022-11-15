@@ -8,4 +8,5 @@ const nextConfig = {
   assetPrefix: isProd ? 'https://andyl22.github.io/Grid/' : undefined
 };
 
-export default nextConfig;
+// eslint-disable-next-line no-undef
+module.exports = nextConfig;

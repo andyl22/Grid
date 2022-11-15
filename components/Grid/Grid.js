@@ -1,12 +1,9 @@
 import styles from './Grid.module.scss';
-import GridRow from './GridRow';
-import GridCell from './GridCell';
-import PicklistGridCell from './PicklistGridCell';
-import TextGridCell from './TextGridCell';
 import GridHeader from './GridHeader';
 import { useEffect, useRef, useState } from 'react';
 import colData from '../../TestData/colData';
 import objData from '../../TestData/objData';
+import GridRowController from './GridRowController';
 
 export default function Grid() {
   // TBD: Grid Resizing
@@ -75,61 +72,6 @@ export default function Grid() {
     ]);
   };
 
-  // passed to cells that support edit to fire an update on the grid. Required to ensure sorting works as expected
-  // should probably move this data to a global state instead of storing it in a component...
-  const updateGridData = (id, fieldName, newValue) => {
-    const arrayIndex = rowData.findIndex((obj) => obj.id === id);
-    setRowData([
-      ...rowData.slice(0, arrayIndex),
-      {
-        ...rowData[arrayIndex],
-        [fieldName]: { ...rowData[arrayIndex][fieldName], value: newValue }
-      },
-      ...rowData.slice(arrayIndex + 1)
-    ]);
-  };
-
-  // maps data into the appropriate cell type based on the field's data type attribute
-  const mappedRow = rowData
-    ? rowData.map((row) => {
-        const mappedRowData = headerData
-          .filter((col) => col.display)
-          .map((col) => {
-            if (!col.display) return;
-            if (!row[col.name])
-              return <GridCell key={`${col.name}_${row.id}`} />;
-            switch (true) {
-              case col.name === 'id':
-                return (
-                  <GridCell key={`${col.name}_${row.id}`} textValue={row.id} />
-                );
-              case col.dataType === 'picklist':
-                return (
-                  <PicklistGridCell
-                    key={`${col.name}_${row.id}`}
-                    initialGridValue={row[col.name].value}
-                    fieldData={{ objID: row.id, fieldName: col.name }}
-                    updateGridData={updateGridData}
-                    options={row[col.name].options}
-                  />
-                );
-              case col.dataType === 'text':
-                return (
-                  <TextGridCell
-                    key={`${col.name}_${row.id}`}
-                    initialGridValue={row[col.name].value}
-                    fieldData={{ objID: row.id, fieldName: col.name }}
-                    updateGridData={updateGridData}
-                  />
-                );
-              default:
-                return <GridCell textValue={row[col.name].value} />;
-            }
-          });
-        return <GridRow key={row.id} gridCells={mappedRowData} />;
-      })
-    : null;
-
   return (
     <div className={styles.gridContainer}>
       <div className={styles.grid} ref={observerRef}>
@@ -138,7 +80,11 @@ export default function Grid() {
           setHeaderData={setHeaderData}
           sortByField={sortByField}
         />
-        {mappedRow}
+        <GridRowController
+          rowData={rowData}
+          setRowData={setRowData}
+          headerData={headerData}
+        />
       </div>
     </div>
   );
