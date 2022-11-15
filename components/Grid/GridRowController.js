@@ -3,6 +3,8 @@ import GridCell from './GridCell';
 import PicklistGridCell from './PicklistGridCell';
 import TextGridCell from './TextGridCell';
 import { useState } from 'react';
+import styles from './GridRowController.module.scss';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function GridRowController(props) {
   const { headerData, rowData, setRowData } = props;
@@ -110,5 +112,16 @@ export default function GridRowController(props) {
       })
     : null;
 
-  return mappedRows;
+  const addRow = () => {
+    alert('Add Row');
+  };
+
+  return (
+    <div className={styles.gridRowController}>
+      {mappedRows}
+      <button className={styles.addRowButton} onClick={addRow}>
+        <AddIcon />
+      </button>
+    </div>
+  );
 }

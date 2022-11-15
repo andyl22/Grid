@@ -1,20 +1,17 @@
-.headerRow {
+.gridRowController {
   display: flex;
-  .addColButton {
+  flex-direction: column;
+  align-items: flex-start;
+  .addRowButton {
     display: flex;
     background: none;
     border: none;
-    padding: 0;
-    padding-left: 0.2rem;
     margin: 0;
+    padding-top: 0.2rem;
     svg {
       font-size: 1.5rem;
       border-radius: 0.2rem;
       background: rgb(73, 156, 252);
     }
   }
-}
-
-.dragActive {
-  height: 100%;
 }
