@@ -48,7 +48,6 @@ export default function HeaderCell(props) {
   };
 
   const handleDragDrop = (e) => {
-    console.log('drop');
     dragDrop(e, order);
   };
 

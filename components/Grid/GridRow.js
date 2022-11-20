@@ -14,7 +14,9 @@ export default function GridRow(props) {
   } = props;
 
   const handleDragStart = (e) => {
+    const img = new Image();
     startDragController(order);
+    e.dataTransfer.setDragImage(img, 0, 0);
     e.dataTransfer.effectAllowed = 'move';
   };
 
