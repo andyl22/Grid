@@ -2,6 +2,8 @@ import Head from 'next/head';
 import Grid from '../components/Grid/Grid';
 import Header from '../components/Header/Header';
 import styles from '../styles/Home.module.scss';
+import colData from '../TestData/colData';
+import objData from '../TestData/objData';
 
 export default function Home() {
   return (
@@ -13,7 +15,7 @@ export default function Home() {
       </Head>
       <Header />
       <main className={styles.main}>
-        <Grid />
+        <Grid colData={colData} objData={objData} />
       </main>
       <footer>
         <p>footer</p>

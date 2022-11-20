@@ -1,12 +1,11 @@
 import styles from './Grid.module.scss';
 import GridHeader from './GridHeader';
 import { useEffect, useRef, useState } from 'react';
-import colData from '../../TestData/colData';
-import objData from '../../TestData/objData';
 import GridRowController from './GridRowController';
 
-export default function Grid() {
+export default function Grid(props) {
   // TBD: Grid Resizing
+  const { colData, objData } = props;
   const [headerData, setHeaderData] = useState(colData);
   const [recordData, setRecordData] = useState(objData.slice(29));
   const [rowData, setRowData] = useState(objData.slice(0, 29));
