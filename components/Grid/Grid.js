@@ -22,7 +22,10 @@ export default function Grid(props) {
     if (!recordData) return;
     // Don't recreate the observer if there are no records available
     if (recordData.length === 0) return;
-    const observerTarget = observerRef.current.lastChild;
+    const observerTarget =
+      observerRef.current.lastChild.children[
+        [observerRef.current.lastChild.children.length - 4]
+      ];
     const options = {
       root: null,
       rootMargin: '5px',
@@ -30,9 +33,10 @@ export default function Grid(props) {
     };
 
     const observerCallback = (entries) => {
+      console.log('fires', observerTarget);
       if (entries[0].isIntersecting) {
         if (recordData.length > 29) {
-          setRowData([...rowData, recordData.slice(0, 29)]);
+          setRowData([...rowData, ...recordData.slice(0, 29)]);
           setRecordData(recordData.slice(29));
         } else {
           setRowData([...rowData, ...recordData]);
