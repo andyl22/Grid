@@ -7,12 +7,12 @@ export default function HeaderCell(props) {
   const {
     fieldData,
     order,
-    initDragOver,
-    dragOver,
+    dragStart,
+    dragEnter,
     dragDrop,
     dragEnd,
+    isDragging,
     dragActive,
-    setDragActive,
     sortByField,
     isSorting,
     updateActiveSort
@@ -20,7 +20,6 @@ export default function HeaderCell(props) {
 
   // Column sorting logic
   const [sortAsc, setSortAsc] = useState(undefined);
-  const [isDragging, setIsDragging] = useState(false);
 
   const sortByCol = () => {
     sortByField(fieldData.name, sortAsc);
@@ -44,27 +43,22 @@ export default function HeaderCell(props) {
   The order attribute is retrieved when the drag ends through the event details
   */
   const initiateDrag = (e) => {
-    setDragActive(true);
-    setIsDragging(true);
-    initDragOver(order);
-    e.dataTransfer.setData('text/plain', order);
+    dragStart(order);
     e.dataTransfer.effectAllowed = 'move';
   };
 
   const handleDragDrop = (e) => {
+    console.log('drop');
     dragDrop(e, order);
   };
 
   // Prevent the drag over from overriding the drag drop action from the dragEnd function from the props
   const handleDragOver = (e) => {
     e.preventDefault();
-    e.stopPropagation();
-    dragOver(order);
+    dragEnter(order);
   };
 
   const handleDragEnd = () => {
-    setDragActive(false);
-    setIsDragging(false);
     dragEnd();
   };
 
@@ -72,9 +66,9 @@ export default function HeaderCell(props) {
     <div
       className={styles.headerCell}
       onDragStart={initiateDrag}
-      onDragOver={handleDragOver}
-      onDrop={handleDragDrop}
-      onDragEnd={handleDragEnd}
+      onDragOver={dragActive ? handleDragOver : null}
+      onDrop={dragActive ? handleDragDrop : null}
+      onDragEnd={dragActive ? handleDragEnd : null}
       draggable
     >
       <GridCell textValue={fieldData.label} />

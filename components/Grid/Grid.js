@@ -33,7 +33,6 @@ export default function Grid(props) {
     };
 
     const observerCallback = (entries) => {
-      console.log('fires', observerTarget);
       if (entries[0].isIntersecting) {
         if (recordData.length > 29) {
           setRowData([...rowData, ...recordData.slice(0, 29)]);

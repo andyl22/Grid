@@ -8,15 +8,21 @@ export default function GridHeader(props) {
   const [backupHeaderData, setBackupHeaderData] = useState(headerData);
   const [tempDragPos, setTempDragPos] = useState();
   const [dragActive, setDragActive] = useState(false);
+  const [activeSort, setActiveSort] = useState();
 
   /*  
     Store the start position, allowing users to start dragging.
     Modifies state from the grid using the setHeaderData function passed in props.
   */
 
+  const dragStart = (order) => {
+    setTempDragPos(order);
+    setDragActive(true);
+  };
+
   // Cut and splice data into a copy of the header data to re-order.
   // Set the header using the prop passed from the grid container.
-  const dragOver = (curPos) => {
+  const moveHeader = (curPos) => {
     if (tempDragPos === curPos) return;
     const dataCopy = [...headerData];
     const startData = dataCopy.splice(tempDragPos, 1)[0];
@@ -30,11 +36,12 @@ export default function GridHeader(props) {
   const dragDrop = () => {
     setTempDragPos();
     setBackupHeaderData(headerData);
+    setDragActive(false);
   };
 
   /* Restore to the original data pre-drag and drop initiation if tempDragPos
   because this indicates the drop was in an invalid zone, since dragDrop never fires */
-  const dragEnd = () => {
+  const checkDropSuccess = () => {
     if (tempDragPos) {
       setHeaderData(backupHeaderData);
       setTempDragPos();
@@ -43,7 +50,6 @@ export default function GridHeader(props) {
 
   // The grid header controls header cell rendering
   // Determination of which header cell is sorting the rows
-  const [activeSort, setActiveSort] = useState();
 
   const updateActiveSort = (colName) => {
     setActiveSort(colName);
@@ -74,12 +80,12 @@ export default function GridHeader(props) {
         fieldData={column}
         key={column.name}
         order={index}
-        initDragOver={setTempDragPos}
-        dragOver={dragOver}
+        dragStart={dragStart}
+        dragEnter={moveHeader}
         dragDrop={dragDrop}
-        dragEnd={dragEnd}
+        dragEnd={checkDropSuccess}
+        isDragging={tempDragPos === index}
         dragActive={dragActive}
-        setDragActive={setDragActive}
         sortByField={sortByField}
         isSorting={activeSort === column.name}
         updateActiveSort={updateActiveSort}

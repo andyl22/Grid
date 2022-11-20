@@ -1,8 +1,9 @@
 .headerCell {
-  background: rgb(217, 219, 210) !important;
+  background: rgb(217, 219, 210);
   font-weight: 700;
   position: relative;
   &:hover {
+    filter: brightness(90%);
     cursor: grab;
   }
   .sortButton {
@@ -39,7 +40,7 @@
   .dragTarget {
     top: 0;
     position: absolute;
-    z-index: 5;
+    z-index: 99;
     height: 100vh;
     width: 100%;
   }

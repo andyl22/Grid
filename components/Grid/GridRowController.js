@@ -2,28 +2,23 @@ import GridRow from './GridRow';
 import GridCell from './GridCell';
 import PicklistGridCell from './PicklistGridCell';
 import TextGridCell from './TextGridCell';
-import { useState } from 'react';
 import styles from './GridRowController.module.scss';
 import AddIcon from '@mui/icons-material/Add';
+import { useState } from 'react';
 
+/*
+  This grid controller handles the rendering, logic, and drag handlers for the grid rows.
+  View more details on how it works by checking out the state and handler comments.
+*/
 export default function GridRowController(props) {
   const { headerData, rowData, setRowData } = props;
-  const [tempDragPos, setTempDragPos] = useState();
+  const [initializingRowPos, setInitializingRowPos] = useState();
+  // In case of users dropping data on elements without an onDrop listener, revert the row back to it's original position
   const [backupRowData, setBackupRowData] = useState([...rowData]);
+  // This controls the drag event handlers (non-drag start) to prevent overriding of column drag operations
+  const [dragActive, setDragActive] = useState(false);
 
-  // move row manually
-  const moveRow = (oldPos, newPos) => {
-    if (oldPos === newPos) return;
-    const dataCopy = [...rowData];
-    const startData = dataCopy.splice(tempDragPos, 1)[0];
-    dataCopy.splice(newPos, 0, startData);
-    setTempDragPos(newPos);
-    setRowData(dataCopy);
-    // setRowData([...rowData].splice(newPos, 0, draggingRowData));
-  };
-
-  // passed to cells that support edit to fire an update on the grid. Required to ensure sorting works as expected
-  // should probably move this data to a global state instead of storing it in a component...
+  // Updates frontend data when editing a cell in the row
   const updateGridData = (id, fieldName, newValue) => {
     const arrayIndex = rowData.findIndex((obj) => obj.id === id);
     setRowData([
@@ -36,31 +31,43 @@ export default function GridRowController(props) {
     ]);
   };
 
+  // DRAG AND DROP ROW LOGIC BELOW
   const startDragController = (startPos) => {
-    setTempDragPos(startPos);
+    setInitializingRowPos(startPos);
+    setDragActive(true);
+  };
+
+  const moveRow = (curPos) => {
+    if (initializingRowPos === curPos) return;
+    const dataCopy = [...rowData];
+    const startData = dataCopy.splice(initializingRowPos, 1)[0];
+    dataCopy.splice(curPos, 0, startData);
+    setInitializingRowPos(curPos);
+    setRowData(dataCopy);
   };
 
   //we store the handle drag over to access the order from tempDragPos state. Pass to row component for execution
   const dragOverController = (order) => {
-    moveRow(tempDragPos, order);
+    moveRow(order);
   };
 
   // set temp drag pos to undefined since we no longer need it. set backup data to the current row data
   const dragDropController = () => {
-    setTempDragPos();
+    setInitializingRowPos();
     setBackupRowData(rowData);
   };
 
-  // cancel and revert to previous row level. check if temp drag pos is undefined because it should be, if drop was executed (successful drop)
+  // cancel and revert to previous row level. check if tempDragPos is undefined since the onDrop should fire first and set the state to undefined
+  // If it's not undefined, that means the user likely did not end the drag operation on an element with an onDrop listener
+  // hence we revert to the backup row data, set the tempDragPos to undefined
   const dragEndController = () => {
-    if (tempDragPos === undefined) {
-      setTempDragPos();
-      return;
-    }
+    setDragActive(false);
+    if (setInitializingRowPos === undefined) return;
+    setInitializingRowPos();
     setRowData(backupRowData);
   };
 
-  // maps data into the appropriate cell type based on the field's data type attribute
+  // maps each col for each row and return it as a grid row
   const mappedRows = rowData
     ? rowData.map((row, index) => {
         const mappedRowData = headerData
@@ -107,6 +114,8 @@ export default function GridRowController(props) {
             dragEndController={dragEndController}
             moveRow={moveRow}
             order={index}
+            isDragging={index === initializingRowPos}
+            dragActive={dragActive}
           />
         );
       })

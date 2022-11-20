@@ -8,12 +8,13 @@ export default function GridRow(props) {
     startDragController,
     dragOverController,
     dragDropController,
-    dragEndController
+    dragEndController,
+    isDragging,
+    dragActive
   } = props;
 
   const handleDragStart = (e) => {
     startDragController(order);
-    e.dataTransfer.setData('text/plain', order);
     e.dataTransfer.effectAllowed = 'move';
   };
 
@@ -33,18 +34,19 @@ export default function GridRow(props) {
   return (
     <div
       className={styles.gridRow}
-      onDragOver={handleDragOver}
-      onDrop={handleDragDrop}
+      onDrop={dragActive ? handleDragDrop : null}
+      onDragOver={dragActive ? handleDragOver : null}
     >
       <button
         className={styles.dragButton}
-        draggable
         onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
+        onDragEnd={dragActive ? handleDragEnd : null}
+        draggable
       >
         <DragIndicatorIcon />
       </button>
       {gridCells}
+      {isDragging && <span className={styles.dragging} />}
     </div>
   );
 }
