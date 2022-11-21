@@ -1,14 +1,14 @@
 .tooltipContainer {
   position: absolute;
-  top: 70%;
-  left: 70%;
+  top: 50%;
+  left: 90%;
   background: rgba(25, 25, 25, 0.9);
   color: white;
   z-index: 99;
   padding: 0.2rem 0.5rem;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   width: max-content;
-  max-width: 300px;
+  max-width: 250px;
   .tooltipText {
     padding: 0 1rem;
     overflow: hidden;

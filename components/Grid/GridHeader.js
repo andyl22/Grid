@@ -59,14 +59,8 @@ export default function GridHeader(props) {
   const addColumn = () => {
     // allow user to select an available field to display
     // add modal with select options for cols that have !col.display
-    alert(headerData.filter((col) => !col.display));
-    const newColumn = {
-      label: 'Test Six',
-      name: 'testFieldSix',
-      dataType: 'text',
-      colWidth: '250px'
-    };
-    setHeaderData([...headerData, newColumn]);
+    console.log(headerData.filter((col) => !col.display));
+    // setHeaderData([...headerData, newColumn]);
   };
 
   const deleteColumn = (index) => {

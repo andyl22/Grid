@@ -35,7 +35,7 @@ export default function GridRow(props) {
 
   return (
     <div
-      className={styles.gridRow}
+      className={`${styles.gridRow} ${isDragging && styles.isDragging}`}
       onDrop={dragActive ? handleDragDrop : null}
       onDragOver={dragActive ? handleDragOver : null}
     >

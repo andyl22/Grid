@@ -1,7 +1,7 @@
 .textCell {
   background: white;
   &:hover {
-    filter: brightness(90%);
+    background: rgb(240, 237, 237);
     cursor: cell;
   }
 }
