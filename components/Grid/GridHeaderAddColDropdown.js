@@ -1,8 +1,10 @@
+import { useRef } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
 import styles from './GridHeaderAddColDropdown.module.scss';
 
 export default function dropdownMenu(props) {
   const { headerData, setHeaderData } = props;
+  const dropdownRef = useRef();
 
   const addColumn = (name) => {
     const indexOfCol = headerData.findIndex((col) => col.name === name);
@@ -11,6 +13,13 @@ export default function dropdownMenu(props) {
     colData.display = true;
     copyOfHeaderData.splice(indexOfCol, 0, colData);
     setHeaderData(copyOfHeaderData);
+    setTimeout(() => {
+      dropdownRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+        inline: 'start'
+      });
+    }, 200);
   };
 
   const columnOptions = headerData
@@ -29,7 +38,7 @@ export default function dropdownMenu(props) {
 
   return (
     <Dropdown>
-      <div className={styles.optionsContainer}>
+      <div className={styles.optionsContainer} ref={dropdownRef}>
         {columnOptions.length > 0 ? columnOptions : <p>No options available</p>}
       </div>
     </Dropdown>
