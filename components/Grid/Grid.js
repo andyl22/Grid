@@ -2,6 +2,7 @@ import styles from './Grid.module.scss';
 import GridHeader from './GridHeader';
 import { useEffect, useRef, useState } from 'react';
 import GridRowController from './GridRowController';
+import RotateRightIcon from '@mui/icons-material/RotateRight';
 
 export default function Grid(props) {
   // TBD: Grid Resizing
@@ -9,7 +10,9 @@ export default function Grid(props) {
   const [headerData, setHeaderData] = useState(colData);
   const [recordData, setRecordData] = useState(objData.slice(29));
   const [rowData, setRowData] = useState(objData.slice(0, 29));
+  const [loading, setLoading] = useState(false);
   const observerRef = useRef();
+  const loadingIconRef = useRef();
 
   /* 
   Observes the last element when the row data changes.
@@ -34,13 +37,17 @@ export default function Grid(props) {
 
     const observerCallback = (entries) => {
       if (entries[0].isIntersecting) {
-        if (recordData.length > 29) {
-          setRowData([...rowData, ...recordData.slice(0, 29)]);
-          setRecordData(recordData.slice(29));
-        } else {
-          setRowData([...rowData, ...recordData]);
-          setRecordData([]);
-        }
+        setLoading(true);
+        setTimeout(() => {
+          if (recordData.length > 29) {
+            setRowData([...rowData, ...recordData.slice(0, 29)]);
+            setRecordData(recordData.slice(29));
+          } else {
+            setRowData([...rowData, ...recordData]);
+            setRecordData([]);
+          }
+          setLoading(false);
+        }, 2000);
       }
     };
 
@@ -76,17 +83,24 @@ export default function Grid(props) {
 
   return (
     <div className={styles.gridContainer}>
-      <div className={styles.grid} ref={observerRef}>
+      <div className={styles.grid}>
         <GridHeader
           headerData={headerData}
           setHeaderData={setHeaderData}
           sortByField={sortByField}
         />
-        <GridRowController
-          rowData={rowData}
-          setRowData={setRowData}
-          headerData={headerData}
-        />
+        <div ref={observerRef}>
+          <GridRowController
+            rowData={rowData}
+            setRowData={setRowData}
+            headerData={headerData}
+          />
+        </div>
+        {loading && (
+          <div className={styles.loadingBanner} ref={loadingIconRef}>
+            <RotateRightIcon fontSize="large" />
+          </div>
+        )}
       </div>
     </div>
   );

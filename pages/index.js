@@ -17,7 +17,7 @@ export default function Home() {
       <main className={styles.main}>
         <Grid colData={colData} objData={genData(100)} />
       </main>
-      <footer>
+      <footer className={styles.footer}>
         <p>footer</p>
       </footer>
     </div>
