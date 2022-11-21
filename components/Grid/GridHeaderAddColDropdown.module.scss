@@ -1,0 +1,18 @@
+.optionsContainer {
+  .option {
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 1px solid rgb(230, 230, 230);
+    border-bottom: none;
+    p {
+      white-space: nowrap;
+    }
+    &:last-of-type {
+      border-bottom: 1px solid rgb(230, 230, 230);
+    }
+    &:hover {
+      cursor: pointer;
+      background: rgb(238, 238, 238);
+    }
+  }
+}

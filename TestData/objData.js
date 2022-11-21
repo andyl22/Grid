@@ -12,7 +12,9 @@ const genData = (numOfRows) => {
       testFieldThree: { value: `Field Three ${i}`, dataType: 'text' },
       testFieldFour: { value: `Field Four ${i}`, dataType: 'text' },
       testFieldFive: { value: `Field Five ${i}`, dataType: 'text' },
-      testFieldSix: { value: `Field Six ${i}`, dataType: 'text' }
+      testFieldSix: { value: `Field Six ${i}`, dataType: 'text' },
+      testFieldSeven: { value: `Field Seven ${i}`, dataType: 'text' },
+      testFieldEight: { value: `Field Eight ${i}`, dataType: 'text' }
     });
   }
   return data;

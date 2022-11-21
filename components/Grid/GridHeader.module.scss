@@ -5,13 +5,25 @@
     background: none;
     border: none;
     padding: 0;
-    padding-left: 0.2rem;
     margin: 0;
+    margin-left: 0.2rem;
+    height: fit-content;
+    width: fit-content;
+    background: green;
+    border-radius: 0.2rem;
+    background: rgb(73, 156, 252);
     svg {
       font-size: 1.5rem;
-      border-radius: 0.2rem;
-      background: rgb(73, 156, 252);
     }
+    &:hover {
+      cursor: pointer;
+      background: rgb(78, 147, 226);
+    }
+  }
+  .dropdownWrapper {
+    position: relative;
+    height: fit-content;
+    width: fit-content;
   }
 }
 

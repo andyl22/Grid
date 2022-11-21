@@ -2,6 +2,7 @@ import styles from './GridHeader.module.scss';
 import { useState } from 'react';
 import HeaderCell from './HeaderCell';
 import AddIcon from '@mui/icons-material/Add';
+import GridHeaderAddColDropdown from './GridHeaderAddColDropdown';
 
 export default function GridHeader(props) {
   const { headerData, setHeaderData, sortByField } = props;
@@ -9,6 +10,7 @@ export default function GridHeader(props) {
   const [tempDragPos, setTempDragPos] = useState();
   const [dragActive, setDragActive] = useState(false);
   const [activeSort, setActiveSort] = useState();
+  const [showDropdown, setShowDropdown] = useState(false);
 
   /*  
     Store the start position, allowing users to start dragging.
@@ -56,11 +58,10 @@ export default function GridHeader(props) {
   };
 
   // cell management - add or delete columns
-  const addColumn = () => {
+  const addColumns = () => {
     // allow user to select an available field to display
     // add modal with select options for cols that have !col.display
-    console.log(headerData.filter((col) => !col.display));
-    // setHeaderData([...headerData, newColumn]);
+    setShowDropdown(!showDropdown);
   };
 
   const deleteColumn = (index) => {
@@ -90,9 +91,17 @@ export default function GridHeader(props) {
   return (
     <div className={styles.headerRow}>
       {mappedHeadercells}
-      <button className={styles.addColButton} onClick={addColumn}>
-        <AddIcon />
-      </button>
+      <div className={styles.dropdownWrapper}>
+        <button className={styles.addColButton} onClick={addColumns}>
+          <AddIcon />
+        </button>
+        {showDropdown ? (
+          <GridHeaderAddColDropdown
+            headerData={headerData}
+            setHeaderData={setHeaderData}
+          />
+        ) : null}
+      </div>
     </div>
   );
 }
