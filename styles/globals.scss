@@ -15,6 +15,12 @@ a {
   box-sizing: border-box;
 }
 
+button {
+  &:focus {
+    outline: none;
+  }
+}
+
 #__next {
   display: flex;
   justify-content: center;

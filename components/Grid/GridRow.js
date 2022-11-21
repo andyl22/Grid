@@ -40,7 +40,7 @@ export default function GridRow(props) {
       onDragOver={dragActive ? handleDragOver : null}
     >
       <button
-        className={styles.dragButton}
+        className={`${styles.dragButton} ${styles.hideButton}`}
         onDragStart={handleDragStart}
         onDragEnd={dragActive ? handleDragEnd : null}
         draggable

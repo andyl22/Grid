@@ -1,7 +1,13 @@
+@use '../../styles/variables' as s;
+
 .gridRow {
   display: flex;
   width: fit-content;
   position: relative;
+  border-right: 1px solid s.$grid-border-color;
+  &:last-of-type {
+    border-bottom: 1px solid s.$grid-border-color;
+  }
   .dragButton {
     right: 100%;
     position: absolute;

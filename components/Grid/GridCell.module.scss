@@ -9,6 +9,8 @@
   height: 50px;
   padding: 0.5rem;
   border: 1px solid s.$grid-border-color;
+  border-bottom: 0;
+  border-right: 0;
   background: white;
   .displayText {
     padding: 0;
