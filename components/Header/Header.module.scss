@@ -1,45 +1,49 @@
 @keyframes fadeIn {
   0% {
-    opacity: 80%;
+    opacity: 0;
     transform: scaleY(90%);
   }
   100% {
-    opacity: 100%;
+    opacity: 1;
     transform: scaleY(100%);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: scaleY(100%);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleY(90%);
   }
 }
 
 .header {
   flex: 0;
   position: sticky;
-  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
+  background: rgb(248, 248, 248);
   gap: 3rem;
   top: 0;
   left: 0;
-  padding: 0.3rem 1rem 0.2rem 1rem;
+  padding: 0.2rem 0.5rem;
   transition-duration: 1s;
   transition: 0.1s;
-  white-space: nowrap;
   color: black;
-  background: gray;
-  animation: fadeIn 1s ease-out;
+  border-bottom: 2px double rgb(247, 247, 247);
+  animation: fadeIn 0.1s ease-out;
   transform-origin: top;
   z-index: 1;
-  a,
-  button {
-    background: none;
-    color: black;
-    position: relative;
-    &:hover {
-      color: #01a232;
-    }
+  h1 {
+    padding: 0.5rem;
   }
 }
 
 .hide {
   top: -10px;
   opacity: 0;
+  animation: fadeOut 0.1s ease-out;
 }

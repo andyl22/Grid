@@ -22,7 +22,7 @@ export default function Header() {
       setTimeout(() => (throttle = false), 300);
     };
 
-    setTimeout(() => document.addEventListener('scroll', handleScroll), 2000);
+    setTimeout(() => document.addEventListener('scroll', handleScroll), 500);
 
     return () => {
       document.removeEventListener('scroll', handleScroll);

@@ -12,9 +12,11 @@
     right: 100%;
     position: absolute;
     height: 100%;
+    border-radius: 0;
+    border: 1px solid s.$grid-border-color;
+    border-bottom: 0;
     &:hover {
       cursor: grab;
-      filter: brightness(70%);
     }
   }
 }
