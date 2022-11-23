@@ -3,7 +3,7 @@ import GridCell from './GridCell';
 import PicklistGridCell from './PicklistGridCell';
 import TextGridCell from './TextGridCell';
 import styles from './GridRowController.module.scss';
-import AddIcon from '@mui/icons-material/Add';
+import GridAddRowDialog from './GridAddRowDialog';
 import { useState } from 'react';
 
 /*
@@ -17,6 +17,7 @@ export default function GridRowController(props) {
   const [backupRowData, setBackupRowData] = useState([...rowData]);
   // This controls the drag event handlers (non-drag start) to prevent overriding of column drag operations
   const [dragActive, setDragActive] = useState(false);
+  // Controls render of the add row dialog
 
   // Updates frontend data when editing a cell in the row
   const updateGridData = (id, fieldName, newValue) => {
@@ -121,16 +122,10 @@ export default function GridRowController(props) {
       })
     : null;
 
-  const addRow = () => {
-    alert('Add Row');
-  };
-
   return (
-    <div className={styles.gridRowController}>
-      {mappedRows}
-      <button className={styles.addRowButton} onClick={addRow}>
-        <AddIcon />
-      </button>
-    </div>
+    <>
+      <div className={styles.gridRowController}>{mappedRows}</div>
+      <GridAddRowDialog />
+    </>
   );
 }

@@ -1,0 +1,22 @@
+@use '../../styles/variables' as s;
+
+.dialogContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 999;
+  background: rgba(0, 0, 0, 10%);
+  .dialogContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100px;
+    min-width: 100px;
+    background: white;
+  }
+}
