@@ -8,30 +8,4 @@
     color: black;
     border-radius: 0.2rem;
   }
-  .loadingBanner {
-    background: rgba(244, 245, 248, 0.356);
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgb(143, 119, 74);
-    height: 100%;
-    width: 100%;
-    z-index: 0;
-    svg {
-      font-size: 11rem;
-      animation: 2s infinite hourglassAnimation;
-    }
-  }
-}
-
-@keyframes hourglassAnimation {
-  0% {
-    transform: rotateZ(0deg);
-  }
-  100% {
-    transform: rotateZ(360deg);
-  }
 }

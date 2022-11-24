@@ -18,5 +18,24 @@
     min-height: 100px;
     min-width: 100px;
     background: white;
+    border-radius: 0.5rem;
+    .formContainer {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem;
+      .formInput {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: 2rem;
+        padding: 0.2rem 0;
+      }
+      .formSubmit {
+        margin-top: 1rem;
+        padding: 0.5rem;
+      }
+    }
   }
 }
