@@ -1,13 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Tooltip from '../Tooltip/Tooltip';
 import styles from './GridCell.module.scss';
 
 export default function GridCell(props) {
   // eslint-disable-next-line react/prop-types
-  const { gridEditElement, submitAction, cancelAction, textValue, colWidth } =
-    props;
+  const {
+    gridEditElement,
+    submitAction,
+    cancelAction,
+    textValue,
+    colWidth = '150px'
+  } = props;
   const [readOnly, setReadOnly] = useState(true);
   const [enableTooltip, setEnableTooltip] = useState(false);
+  const cellRef = useRef();
 
   const switchToEditMode = (e) => {
     e.stopPropagation();
@@ -42,14 +48,33 @@ export default function GridCell(props) {
   };
 
   const cellWidth = {
-    width: colWidth ? colWidth : '150px'
+    width: `${colWidth}px`
   };
 
-  const divRender = (
+  const submitEdit = (e) => {
+    saveEdits(e);
+  };
+
+  useEffect(() => {
+    if (!cellRef) return;
+
+    const cellResizeHandler = (e) => {
+      if (e[0].borderBoxSize[0].inlineSize !== colWidth)
+        console.log('Fire resize observer');
+    };
+
+    const cellResizeObserver = new ResizeObserver(cellResizeHandler);
+    cellResizeObserver.observe(cellRef.current);
+
+    return () => cellResizeObserver.unobserve(cellRef.current);
+  }, []);
+
+  const viewRender = (
     <div
       className={styles.gridCellContainer}
       style={cellWidth}
       onClick={switchToEditMode}
+      ref={cellRef}
     >
       <p className={styles.displayText} onMouseOver={displayTooltip}>
         {textValue}
@@ -57,10 +82,6 @@ export default function GridCell(props) {
       {enableTooltip && <Tooltip text={textValue} />}
     </div>
   );
-
-  const submitEdit = (e) => {
-    saveEdits(e);
-  };
 
   const editRender = (
     <div
@@ -78,5 +99,5 @@ export default function GridCell(props) {
     </div>
   );
 
-  return readOnly ? divRender : editRender;
+  return readOnly ? viewRender : editRender;
 }
