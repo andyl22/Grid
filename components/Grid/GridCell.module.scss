@@ -5,15 +5,14 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 300px;
-  height: 50px;
   padding: 0.5rem;
   border: 1px solid s.$grid-border-color;
   border-bottom: 0;
   border-right: 0;
   background: white;
+  min-width: 100px;
+  height: 50px;
   .displayText {
-    padding: 0;
     overflow: hidden;
     word-break: break-all;
     text-overflow: ellipsis;

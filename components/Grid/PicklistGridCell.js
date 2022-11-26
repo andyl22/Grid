@@ -36,6 +36,7 @@ export default function PicklistGridCell(props) {
         gridEditElement={selectInput}
         submitAction={submitAction}
         textValue={gridValue}
+        colWidth={fieldData.colWidth}
       />
     </div>
   );

@@ -4,7 +4,8 @@ import styles from './GridCell.module.scss';
 
 export default function GridCell(props) {
   // eslint-disable-next-line react/prop-types
-  const { gridEditElement, submitAction, cancelAction, textValue } = props;
+  const { gridEditElement, submitAction, cancelAction, textValue, colWidth } =
+    props;
   const [readOnly, setReadOnly] = useState(true);
   const [enableTooltip, setEnableTooltip] = useState(false);
 
@@ -40,8 +41,16 @@ export default function GridCell(props) {
     );
   };
 
+  const cellWidth = {
+    width: colWidth ? colWidth : '150px'
+  };
+
   const divRender = (
-    <div className={styles.gridCellContainer} onClick={switchToEditMode}>
+    <div
+      className={styles.gridCellContainer}
+      style={cellWidth}
+      onClick={switchToEditMode}
+    >
       <p className={styles.displayText} onMouseOver={displayTooltip}>
         {textValue}
       </p>
@@ -56,6 +65,7 @@ export default function GridCell(props) {
   const editRender = (
     <div
       className={`${styles.gridCellContainer} ${styles.gridEditMode}`}
+      style={cellWidth}
       onClick={submitEdit}
     >
       <form
