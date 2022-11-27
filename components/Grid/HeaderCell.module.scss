@@ -5,9 +5,6 @@
     resize: none !important;
   }
   .cellContent {
-    &:active {
-      cursor: none;
-    }
     background: rgb(217, 219, 210);
     font-weight: 700;
     position: relative;

@@ -101,6 +101,7 @@ export default function HeaderCell(props) {
           isDragging && styles.disableOverflow
         }`}
         onDragStart={initiateDrag}
+        onDragEnd={dragActive ? handleDragEnd : null}
         draggable
         ref={cellRef}
       >
@@ -119,7 +120,7 @@ export default function HeaderCell(props) {
         <>
           <span
             onDragOver={handleDragOver}
-            onDragEnd={dragActive ? handleDragEnd : null}
+            onDragEnd={() => {}}
             className={
               tempDragPos === order
                 ? styles.currentDragTarget
