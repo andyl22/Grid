@@ -1,9 +1,13 @@
 .headerCell {
+  position: relative;
   .disableOverflow {
     overflow: inherit !important;
     resize: none !important;
   }
   .cellContent {
+    &:active {
+      cursor: none;
+    }
     background: rgb(217, 219, 210);
     font-weight: 700;
     position: relative;
@@ -45,12 +49,47 @@
       background: rgb(126 184 225 / 35%);
     }
   }
-  .dragTarget {
-    display: block;
+  .currentDragTarget {
     top: 50px;
     position: absolute;
     z-index: 99;
     height: 100vh;
     width: 100%;
+  }
+  .leftDragTarget {
+    display: block;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: 99;
+    height: 100vh;
+    width: 50%;
+  }
+  .rightDragTarget {
+    display: block;
+    top: 0;
+    right: 0;
+    position: absolute;
+    z-index: 99;
+    height: 100vh;
+    width: 50%;
+  }
+  .leftDragPlaceholder {
+    display: block;
+    top: 0;
+    left: 50%;
+    position: absolute;
+    z-index: 99;
+    height: 100vh;
+    width: 50%;
+  }
+  .rightDragPlaceholder {
+    display: block;
+    top: 0;
+    right: 50%;
+    position: absolute;
+    z-index: 99;
+    height: 100vh;
+    width: 50%;
   }
 }

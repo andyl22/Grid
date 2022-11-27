@@ -71,11 +71,11 @@ export default function GridHeader() {
   because this indicates the drop was in an invalid zone, since dragDrop never fires */
   const checkDropSuccess = () => {
     if (tempDragPos) {
+      setTempDragPos(undefined);
       dispatch({
         type: 'UPDATECOL',
         payload: { updatedColData: backupHeaderData }
       });
-      setTempDragPos();
     }
   };
 
@@ -117,6 +117,7 @@ export default function GridHeader() {
         isSorting={activeSort === column.name}
         updateActiveSort={updateActiveSort}
         deleteColumn={deleteColumn}
+        tempDragPos={tempDragPos}
       />
     ));
 

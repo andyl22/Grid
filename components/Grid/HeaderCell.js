@@ -16,10 +16,12 @@ export default function HeaderCell(props) {
     dragActive,
     sortByField,
     isSorting,
-    updateActiveSort
+    updateActiveSort,
+    tempDragPos
   } = props;
   const { gridData, dispatch } = useContext(GridContext);
   const cellRef = useRef();
+  console.log(tempDragPos);
 
   // Column sorting logic
   const [sortAsc, setSortAsc] = useState(undefined);
@@ -92,7 +94,6 @@ export default function HeaderCell(props) {
   return (
     <div
       className={styles.headerCell}
-      onDragOver={dragActive ? handleDragOver : null}
       onDrop={dragActive ? handleDragDrop : null}
     >
       <div
@@ -100,7 +101,6 @@ export default function HeaderCell(props) {
           isDragging && styles.disableOverflow
         }`}
         onDragStart={initiateDrag}
-        onDragEnd={dragActive ? handleDragEnd : null}
         draggable
         ref={cellRef}
       >
@@ -115,7 +115,34 @@ export default function HeaderCell(props) {
         </button>
         {isDragging && <span className={styles.isDragging} />}
       </div>
-      {dragActive && <span className={styles.dragTarget} />}
+      {dragActive && tempDragPos !== undefined ? (
+        <>
+          <span
+            onDragOver={handleDragOver}
+            onDragEnd={dragActive ? handleDragEnd : null}
+            className={
+              tempDragPos === order
+                ? styles.currentDragTarget
+                : tempDragPos > order
+                ? styles.leftDragTarget
+                : styles.rightDragTarget
+            }
+          />
+          <span
+            onDragOver={(e) => {
+              e.preventDefault();
+            }}
+            onDragEnd={() => {}}
+            className={
+              tempDragPos === order
+                ? styles.currentDragTarget
+                : tempDragPos > order
+                ? styles.leftDragPlaceholder
+                : styles.rightDragPlaceholder
+            }
+          />
+        </>
+      ) : undefined}
     </div>
   );
 }
