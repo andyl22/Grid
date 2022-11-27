@@ -57,7 +57,7 @@ export default function GridCell(props) {
   useEffect(() => {
     if (!cellRef) return;
 
-    const cellResizeHandler = (e) => {
+    const cellResizeHandler = () => {
       console.log('Resize Observer');
     };
 

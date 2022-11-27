@@ -5,12 +5,30 @@ import AddIcon from '@mui/icons-material/Add';
 import GridHeaderAddColDropdown from './GridHeaderAddColDropdown';
 
 export default function GridHeader(props) {
-  const { headerData, setHeaderData, sortByField } = props;
+  const { headerData, setHeaderData } = props;
   const [backupHeaderData, setBackupHeaderData] = useState(headerData);
   const [tempDragPos, setTempDragPos] = useState();
   const [dragActive, setDragActive] = useState(false);
   const [activeSort, setActiveSort] = useState();
   const [showDropdown, setShowDropdown] = useState(false);
+
+  // passed to header cells to fire a sort operation onClick
+  const sortByField = (fieldName, ascending) => {
+    setRowData([
+      ...rowData.sort((a, b) => {
+        if (!a[fieldName]) return 1;
+        if (!b[fieldName]) return -1;
+        const fieldOne = fieldName === 'id' ? a.id : a[fieldName].value;
+        const fieldTwo = fieldName === 'id' ? b.id : b[fieldName].value;
+        if (fieldOne === fieldTwo) return 0;
+        if (ascending) {
+          return fieldOne < fieldTwo ? 1 : -1;
+        } else {
+          return fieldOne > fieldTwo ? 1 : -1;
+        }
+      })
+    ]);
+  };
 
   /*  
     Store the start position, allowing users to start dragging.

@@ -13,10 +13,10 @@ import { GridContext } from '../../context/GridContext';
   This grid controller handles the rendering, logic, and drag handlers for the grid rows.
   View more details on how it works by checking out the state and handler comments.
 */
-export default function GridRowController(props) {
+export default function GridRowController() {
   const { gridData, dispatch } = useContext(GridContext);
-  console.log(gridData);
-  const [recordData, setRecordData] = useState(objData.slice(29));
+  const { objData, rowData, colData } = gridData;
+  // const [recordData, setRecordData] = useState(objData.slice(29));
   const [initializingRowPos, setInitializingRowPos] = useState();
   // In case of users dropping data on elements without an onDrop listener, revert the row back to it's original position
   const [backupRowData, setBackupRowData] = useState([...rowData]);
@@ -30,14 +30,19 @@ export default function GridRowController(props) {
   // Updates frontend data when editing a cell in the row
   const updateGridData = (id, fieldName, newValue) => {
     const arrayIndex = rowData.findIndex((obj) => obj.id === id);
-    setRowData([
-      ...rowData.slice(0, arrayIndex),
-      {
-        ...rowData[arrayIndex],
-        [fieldName]: { ...rowData[arrayIndex][fieldName], value: newValue }
-      },
-      ...rowData.slice(arrayIndex + 1)
-    ]);
+    dispatch({
+      type: 'UPDATEROW',
+      payload: {
+        updatedRowData: [
+          ...rowData.slice(0, arrayIndex),
+          {
+            ...rowData[arrayIndex],
+            [fieldName]: { ...rowData[arrayIndex][fieldName], value: newValue }
+          },
+          ...rowData.slice(arrayIndex + 1)
+        ]
+      }
+    });
   };
 
   // DRAG AND DROP ROW LOGIC BELOW
@@ -52,7 +57,7 @@ export default function GridRowController(props) {
     const startData = dataCopy.splice(initializingRowPos, 1)[0];
     dataCopy.splice(curPos, 0, startData);
     setInitializingRowPos(curPos);
-    setRowData(dataCopy);
+    dispatch({ type: 'UPDATEROW', payload: { updatedRowData: dataCopy } });
   };
 
   //we store the handle drag over to access the order from tempDragPos state. Pass to row component for execution
@@ -73,7 +78,7 @@ export default function GridRowController(props) {
     setDragActive(false);
     if (setInitializingRowPos === undefined) return;
     setInitializingRowPos();
-    setRowData(backupRowData);
+    dispatch({ type: 'UPDATEROW', payload: { updatedRowData: backupRowData } });
   };
 
   /* 
@@ -84,9 +89,7 @@ export default function GridRowController(props) {
   for minor optimization.
   */
   useEffect(() => {
-    // Don't recreate the observer if there are no records available
-    if (recordData.length === 0) return;
-
+    if (objData.length === 0) return;
     const observerTarget = observerRef.current.lastChild;
     const options = {
       root: null,
@@ -94,32 +97,29 @@ export default function GridRowController(props) {
       threshold: 0.02
     };
 
-    const observerCallback = (entries) => {
-      if (entries[0].isIntersecting) {
-        setLoading(true);
-        setTimeout(() => {
-          if (recordData.length > 29) {
-            setRowData([...rowData, ...recordData.slice(0, 29)]);
-            setRecordData(recordData.slice(29));
-          } else {
-            setRowData([...rowData, ...recordData]);
-            setRecordData([]);
-          }
-          setLoading(false);
-        }, 2000);
-      }
+    const observerCallback = async (entries) => {
+      // Don't execute if the observer is not intersecting
+      if (!entries[0].isIntersecting) return;
+      setLoading(true);
+      const wait = () =>
+        new Promise((resolve) => {
+          setTimeout(() => resolve('OK'), 1500);
+        });
+      await wait();
+      dispatch({ type: 'LOADRECORDS' });
+      setLoading(false);
     };
 
     const observer = new IntersectionObserver(observerCallback, options);
 
     observer.observe(observerTarget);
     return () => observer.unobserve(observerTarget);
-  }, [recordData]);
+  }, [rowData]);
 
   // maps each col for each row and return it as a grid row
   const mappedRows = rowData
     ? rowData.map((row, index) => {
-        const mappedRowData = headerData
+        const mappedRowData = colData
           .filter((col) => col.display)
           .map((col) => {
             if (!col.display) return;

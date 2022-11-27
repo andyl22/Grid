@@ -3,22 +3,41 @@ const GridContext = createContext();
 
 const GridProvider = (props) => {
   const { children, initialColData, initialObjData } = props;
-  console.log(initialObjData);
 
   const reducer = (gridData, action) => {
     const { colData, objData, rowData } = gridData;
 
     switch (action.type) {
       case 'TEST':
-        return 'Cookies';
+        return { ...gridData };
+      case 'LOADRECORDS':
+        if (objData.length === 0) return { ...gridData };
+        if (objData.length > 29) {
+          return {
+            ...gridData,
+            rowData: [...rowData, ...objData.slice(0, 29)],
+            objData: objData.slice(29)
+          };
+        } else {
+          return {
+            ...gridData,
+            rowData: [...rowData, ...objData],
+            objData: []
+          };
+        }
+      case 'UPDATEROW':
+        return {
+          ...gridData,
+          rowData: action.payload.updatedRowData
+        };
       default:
-        return 'DEFAULT';
+        return { ...gridData };
     }
   };
 
   const [gridData, dispatch] = useReducer(reducer, {
     colData: initialColData,
-    objData: initialObjData,
+    objData: initialObjData.slice(29),
     rowData: initialObjData.slice(0, 29)
   });
 
