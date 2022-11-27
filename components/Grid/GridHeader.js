@@ -104,7 +104,7 @@ export default function GridHeader() {
     .filter((column) => column.display)
     .map((column, index) => (
       <HeaderCell
-        fieldData={column}
+        cellColData={column}
         key={column.name}
         order={index}
         dragStart={dragStart}

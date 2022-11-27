@@ -3,11 +3,12 @@ import { useState } from 'react';
 import GridCell from './GridCell';
 
 export default function PicklistGridCell(props) {
-  const { initialGridValue, fieldData, updateGridData, options } = props;
+  const { initialGridValue, cellData, cellColData, updateGridData, options } =
+    props;
   const [gridValue, setGridValue] = useState(initialGridValue);
 
   const submitAction = () => {
-    updateGridData(fieldData.objID, fieldData.colInfo.name, gridValue);
+    updateGridData(cellData.id, cellData.name, gridValue);
   };
 
   const changeHandler = (e) => {
@@ -34,8 +35,8 @@ export default function PicklistGridCell(props) {
       <GridCell
         gridEditElement={selectInput}
         submitAction={submitAction}
-        textValue={gridValue}
-        colInfo={fieldData.colInfo}
+        readValue={gridValue}
+        cellColData={cellColData}
       />
     </div>
   );

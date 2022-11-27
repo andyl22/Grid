@@ -1,4 +1,4 @@
-import { useRef, useContext } from 'react';
+import { useRef, useContext, useEffect } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
 import styles from './GridHeaderAddColDropdown.module.scss';
 import { GridContext } from '../../context/GridContext';
@@ -40,6 +40,14 @@ export default function dropdownMenu() {
         </div>
       );
     });
+
+  useEffect(() => {
+    dropdownRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+      inline: 'start'
+    });
+  }, []);
 
   return (
     <Dropdown>

@@ -125,14 +125,21 @@ export default function GridRowController() {
           .map((col) => {
             if (!col.display) return;
             if (!row[col.name])
-              return <GridCell key={`${col.name}_${row.id}`} colInfo={col} />;
+              return (
+                <GridCell
+                  key={`${col.name}_${row.id}`}
+                  cellData={row}
+                  cellColData={col}
+                />
+              );
             switch (true) {
               case col.name === 'id':
                 return (
                   <GridCell
                     key={`${col.name}_${row.id}`}
-                    textValue={row.id}
-                    colInfo={col}
+                    readValue={row.id}
+                    cellData={row}
+                    cellColData={col}
                   />
                 );
               case col.dataType === 'picklist':
@@ -140,10 +147,8 @@ export default function GridRowController() {
                   <PicklistGridCell
                     key={`${col.name}_${row.id}`}
                     initialGridValue={row[col.name].value}
-                    fieldData={{
-                      objID: row.id,
-                      colInfo: col
-                    }}
+                    cellData={row}
+                    cellColData={col}
                     updateGridData={updateGridData}
                     options={row[col.name].options}
                   />
@@ -153,10 +158,8 @@ export default function GridRowController() {
                   <TextGridCell
                     key={`${col.name}_${row.id}`}
                     initialGridValue={row[col.name].value}
-                    fieldData={{
-                      objID: row.id,
-                      colInfo: col
-                    }}
+                    cellData={row}
+                    cellColData={col}
                     updateGridData={updateGridData}
                   />
                 );

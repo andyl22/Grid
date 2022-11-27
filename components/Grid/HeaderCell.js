@@ -5,7 +5,7 @@ import GridCell from './GridCell';
 
 export default function HeaderCell(props) {
   const {
-    fieldData,
+    cellColData,
     order,
     dragStart,
     dragEnter,
@@ -22,9 +22,9 @@ export default function HeaderCell(props) {
   const [sortAsc, setSortAsc] = useState(undefined);
 
   const sortByCol = () => {
-    sortByField(fieldData.name, sortAsc);
+    sortByField(cellColData.name, sortAsc);
     setSortAsc(!sortAsc);
-    updateActiveSort(fieldData.name);
+    updateActiveSort(cellColData.name);
   };
 
   // If no longer sorting, unset the state
@@ -70,7 +70,7 @@ export default function HeaderCell(props) {
       onDragEnd={dragActive ? handleDragEnd : null}
       draggable
     >
-      <GridCell textValue={fieldData.label} colInfo={fieldData} />
+      <GridCell readValue={cellColData.label} cellColData={cellColData} />
       <button
         className={`${styles.sortButton} ${
           isSorting && styles.highlightButton
