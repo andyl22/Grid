@@ -11,7 +11,6 @@ export default function PicklistGridCell(props) {
   };
 
   const changeHandler = (e) => {
-    console.log(e.target.value);
     setGridValue(e.target.value);
     e.target.parentNode.dispatchEvent(
       new Event('submit', { cancelable: true, bubbles: true })
@@ -36,7 +35,7 @@ export default function PicklistGridCell(props) {
         gridEditElement={selectInput}
         submitAction={submitAction}
         textValue={gridValue}
-        colWidth={fieldData.colWidth}
+        colInfo={fieldData.colInfo}
       />
     </div>
   );

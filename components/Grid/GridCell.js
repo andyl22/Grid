@@ -4,16 +4,13 @@ import styles from './GridCell.module.scss';
 
 export default function GridCell(props) {
   // eslint-disable-next-line react/prop-types
-  const {
-    gridEditElement,
-    submitAction,
-    cancelAction,
-    textValue,
-    colWidth = '150px'
-  } = props;
+  const { gridEditElement, submitAction, cancelAction, textValue, colInfo } =
+    props;
   const [readOnly, setReadOnly] = useState(true);
   const [enableTooltip, setEnableTooltip] = useState(false);
   const cellRef = useRef();
+
+  const colWidth = colInfo?.colWidth ? colInfo.colWidth : 150;
 
   const switchToEditMode = (e) => {
     e.stopPropagation();
@@ -38,13 +35,15 @@ export default function GridCell(props) {
 
   const displayTooltip = (e) => {
     const target = e.target;
-    if (target.offsetHeight < target.scrollHeight) setEnableTooltip(true);
-    // hide tooltip on mouseleave. fires once then the event listener is discardded
-    target.parentNode.addEventListener(
-      'mouseleave',
-      () => setEnableTooltip(false),
-      { once: true }
-    );
+    if (target.offsetHeight < target.scrollHeight) {
+      setEnableTooltip(true);
+      // hide tooltip on mouseleave. fires once then the event listener is discardded
+      target.parentNode.addEventListener(
+        'mouseleave',
+        () => setEnableTooltip(false),
+        { once: true }
+      );
+    }
   };
 
   const cellWidth = {
@@ -59,14 +58,13 @@ export default function GridCell(props) {
     if (!cellRef) return;
 
     const cellResizeHandler = (e) => {
-      if (e[0].borderBoxSize[0].inlineSize !== colWidth)
-        console.log('Fire resize observer');
+      console.log('Resize Observer');
     };
 
     const cellResizeObserver = new ResizeObserver(cellResizeHandler);
     cellResizeObserver.observe(cellRef.current);
 
-    return () => cellResizeObserver.unobserve(cellRef.current);
+    return () => cellResizeObserver.disconnect();
   }, []);
 
   const viewRender = (

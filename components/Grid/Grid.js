@@ -1,19 +1,14 @@
-import styles from './Grid.module.scss';
-import GridHeader from './GridHeader';
 import { useEffect, useState } from 'react';
+import { GridProvider } from '../../context/GridContext';
+import GridHeader from './GridHeader';
 import GridRowController from './GridRowController';
+import styles from './Grid.module.scss';
 
 export default function Grid(props) {
   // TBD: Grid Resizing
   const { colData, objData } = props;
   const [headerData, setHeaderData] = useState(colData);
   const [rowData, setRowData] = useState(objData.slice(0, 29));
-
-  // Pass initial data to render
-  useEffect(() => {
-    // setRecordData(recordData.slice(29));
-    // setRowData(recordData.slice(0, 29));
-  }, []);
 
   // passed to header cells to fire a sort operation onClick
   const sortByField = (fieldName, ascending) => {
@@ -34,20 +29,17 @@ export default function Grid(props) {
   };
 
   return (
-    <div className={styles.gridContainer}>
-      <div className={styles.grid}>
-        <GridHeader
-          headerData={headerData}
-          setHeaderData={setHeaderData}
-          sortByField={sortByField}
-        />
-        <GridRowController
-          rowData={rowData}
-          objData={objData}
-          setRowData={setRowData}
-          headerData={headerData}
-        />
+    <GridProvider initialColData={colData} initialObjData={objData}>
+      <div className={styles.gridContainer}>
+        <div className={styles.grid}>
+          <GridHeader
+            headerData={headerData}
+            setHeaderData={setHeaderData}
+            sortByField={sortByField}
+          />
+          {/* <GridRowController /> */}
+        </div>
       </div>
-    </div>
+    </GridProvider>
   );
 }

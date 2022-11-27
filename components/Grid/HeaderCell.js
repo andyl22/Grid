@@ -70,7 +70,7 @@ export default function HeaderCell(props) {
       onDragEnd={dragActive ? handleDragEnd : null}
       draggable
     >
-      <GridCell textValue={fieldData.label} colWidth={fieldData.colWidth} />
+      <GridCell textValue={fieldData.label} colInfo={fieldData} />
       <button
         className={`${styles.sortButton} ${
           isSorting && styles.highlightButton

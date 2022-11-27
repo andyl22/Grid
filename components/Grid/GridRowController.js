@@ -6,14 +6,16 @@ import styles from './GridRowController.module.scss';
 import GridAddRowDialog from './GridAddRowDialog';
 import dataModel from '../../TestData/dataModel';
 import RotateRightIcon from '@mui/icons-material/RotateRight';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
+import { GridContext } from '../../context/GridContext';
 
 /*
   This grid controller handles the rendering, logic, and drag handlers for the grid rows.
   View more details on how it works by checking out the state and handler comments.
 */
 export default function GridRowController(props) {
-  const { headerData, rowData, objData, setRowData } = props;
+  const { gridData, dispatch } = useContext(GridContext);
+  console.log(gridData);
   const [recordData, setRecordData] = useState(objData.slice(29));
   const [initializingRowPos, setInitializingRowPos] = useState();
   // In case of users dropping data on elements without an onDrop listener, revert the row back to it's original position
@@ -122,19 +124,14 @@ export default function GridRowController(props) {
           .map((col) => {
             if (!col.display) return;
             if (!row[col.name])
-              return (
-                <GridCell
-                  key={`${col.name}_${row.id}`}
-                  colWidth={col.colWidth}
-                />
-              );
+              return <GridCell key={`${col.name}_${row.id}`} colInfo={col} />;
             switch (true) {
               case col.name === 'id':
                 return (
                   <GridCell
                     key={`${col.name}_${row.id}`}
                     textValue={row.id}
-                    colWidth={col.colWidth}
+                    colInfo={col}
                   />
                 );
               case col.dataType === 'picklist':
@@ -144,8 +141,7 @@ export default function GridRowController(props) {
                     initialGridValue={row[col.name].value}
                     fieldData={{
                       objID: row.id,
-                      fieldName: col.name,
-                      colWidth: col.colWidth
+                      colInfo: col
                     }}
                     updateGridData={updateGridData}
                     options={row[col.name].options}
@@ -158,8 +154,7 @@ export default function GridRowController(props) {
                     initialGridValue={row[col.name].value}
                     fieldData={{
                       objID: row.id,
-                      fieldName: col.name,
-                      colWidth: col.colWidth
+                      colInfo: col
                     }}
                     updateGridData={updateGridData}
                   />

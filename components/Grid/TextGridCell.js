@@ -26,7 +26,7 @@ export default function TextGridCell(props) {
         cancelAction={() => setGridValue(revertValue)}
         submitAction={submitAction}
         textValue={gridValue}
-        colWidth={fieldData.colWidth}
+        colInfo={fieldData.colInfo}
       />
     </div>
   );
