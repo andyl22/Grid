@@ -36,7 +36,6 @@ export default function GridHeader() {
         ]
       }
     });
-    console.log(rowData);
   };
 
   /*  
@@ -57,7 +56,7 @@ export default function GridHeader() {
     const startData = dataCopy.splice(tempDragPos, 1)[0];
     dataCopy.splice(curPos, 0, startData);
     setTempDragPos(curPos);
-    // setHeaderData(dataCopy);
+    dispatch({ type: 'UPDATECOL', payload: { updatedColData: dataCopy } });
   };
 
   /* Drag end will fire first and clear the temp drag position 
@@ -72,7 +71,10 @@ export default function GridHeader() {
   because this indicates the drop was in an invalid zone, since dragDrop never fires */
   const checkDropSuccess = () => {
     if (tempDragPos) {
-      // setHeaderData(backupHeaderData);
+      dispatch({
+        type: 'UPDATECOL',
+        payload: { updatedColData: backupHeaderData }
+      });
       setTempDragPos();
     }
   };
@@ -92,7 +94,10 @@ export default function GridHeader() {
   };
 
   const deleteColumn = (index) => {
-    // setHeaderData([...headerData].splice(index, 1));
+    dispatch({
+      type: 'UPDATECOL',
+      payload: { updatedColData: [...colData].splice(index, 1) }
+    });
   };
 
   const mappedHeadercells = colData
@@ -122,12 +127,7 @@ export default function GridHeader() {
         <button className={styles.addColButton} onClick={addColumns}>
           <AddIcon />
         </button>
-        {showDropdown ? (
-          <GridHeaderAddColDropdown
-            headerData={headerData}
-            setHeaderData={setHeaderData}
-          />
-        ) : null}
+        {showDropdown ? <GridHeaderAddColDropdown /> : null}
       </div>
     </div>
   );

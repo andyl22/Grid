@@ -1,18 +1,23 @@
-import { useRef } from 'react';
+import { useRef, useContext } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
 import styles from './GridHeaderAddColDropdown.module.scss';
+import { GridContext } from '../../context/GridContext';
 
-export default function dropdownMenu(props) {
-  const { headerData, setHeaderData } = props;
+export default function dropdownMenu() {
+  const { gridData, dispatch } = useContext(GridContext);
+  const { colData } = gridData;
   const dropdownRef = useRef();
 
   const addColumn = (name) => {
-    const indexOfCol = headerData.findIndex((col) => col.name === name);
-    const copyOfHeaderData = [...headerData];
-    const colData = copyOfHeaderData.splice(indexOfCol, 1)[0];
-    colData.display = true;
-    copyOfHeaderData.splice(indexOfCol, 0, colData);
-    setHeaderData(copyOfHeaderData);
+    const indexOfCol = colData.findIndex((col) => col.name === name);
+    const copyOfHeaderData = [...colData];
+    const columnToAdd = copyOfHeaderData.splice(indexOfCol, 1)[0];
+    columnToAdd.display = true;
+    copyOfHeaderData.splice(indexOfCol, 0, columnToAdd);
+    dispatch({
+      type: 'UPDATECOL',
+      payload: { updatedColData: copyOfHeaderData }
+    });
     setTimeout(() => {
       dropdownRef.current.scrollIntoView({
         behavior: 'smooth',
@@ -22,7 +27,7 @@ export default function dropdownMenu(props) {
     }, 200);
   };
 
-  const columnOptions = headerData
+  const columnOptions = colData
     .filter((col) => !col.display)
     .map((col) => {
       return (

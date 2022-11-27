@@ -30,6 +30,11 @@ const GridProvider = (props) => {
           ...gridData,
           rowData: action.payload.updatedRowData
         };
+      case 'UPDATECOL':
+        return {
+          ...gridData,
+          colData: action.payload.updatedColData
+        };
       default:
         return { ...gridData };
     }
