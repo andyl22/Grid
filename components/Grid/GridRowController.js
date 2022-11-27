@@ -27,9 +27,10 @@ export default function GridRowController() {
   const observerRef = useRef();
   const loadingIconRef = useRef();
 
-  // Updates frontend data when editing a cell in the row
+  // Updates context data when editing a cell in the row
   const updateGridData = (id, fieldName, newValue) => {
     const arrayIndex = rowData.findIndex((obj) => obj.id === id);
+    console.log(fieldName);
     dispatch({
       type: 'UPDATEROW',
       payload: {

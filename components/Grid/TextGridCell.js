@@ -8,7 +8,7 @@ export default function TextGridCell(props) {
   const [gridValue, setGridValue] = useState(initialGridValue);
 
   const submitAction = () => {
-    updateGridData(fieldData.objID, fieldData.fieldName, gridValue);
+    updateGridData(fieldData.objID, fieldData.colInfo.name, gridValue);
     setRevertValue(gridValue);
   };
 

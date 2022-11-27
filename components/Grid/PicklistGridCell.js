@@ -7,7 +7,7 @@ export default function PicklistGridCell(props) {
   const [gridValue, setGridValue] = useState(initialGridValue);
 
   const submitAction = () => {
-    updateGridData(fieldData.objID, fieldData.fieldName, gridValue);
+    updateGridData(fieldData.objID, fieldData.colInfo.name, gridValue);
   };
 
   const changeHandler = (e) => {

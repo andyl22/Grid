@@ -1,12 +1,15 @@
 import styles from './GridHeader.module.scss';
-import { useState } from 'react';
 import HeaderCell from './HeaderCell';
 import AddIcon from '@mui/icons-material/Add';
 import GridHeaderAddColDropdown from './GridHeaderAddColDropdown';
+import { useState, useContext } from 'react';
 
-export default function GridHeader(props) {
-  const { headerData, setHeaderData } = props;
-  const [backupHeaderData, setBackupHeaderData] = useState(headerData);
+import { GridContext } from '../../context/GridContext';
+
+export default function GridHeader() {
+  const { gridData, dispatch } = useContext(GridContext);
+  const { rowData, colData } = gridData;
+  const [backupHeaderData, setBackupHeaderData] = useState(colData);
   const [tempDragPos, setTempDragPos] = useState();
   const [dragActive, setDragActive] = useState(false);
   const [activeSort, setActiveSort] = useState();
@@ -14,20 +17,26 @@ export default function GridHeader(props) {
 
   // passed to header cells to fire a sort operation onClick
   const sortByField = (fieldName, ascending) => {
-    setRowData([
-      ...rowData.sort((a, b) => {
-        if (!a[fieldName]) return 1;
-        if (!b[fieldName]) return -1;
-        const fieldOne = fieldName === 'id' ? a.id : a[fieldName].value;
-        const fieldTwo = fieldName === 'id' ? b.id : b[fieldName].value;
-        if (fieldOne === fieldTwo) return 0;
-        if (ascending) {
-          return fieldOne < fieldTwo ? 1 : -1;
-        } else {
-          return fieldOne > fieldTwo ? 1 : -1;
-        }
-      })
-    ]);
+    dispatch({
+      type: 'UPDATEROW',
+      payload: {
+        updatedRowData: [
+          ...rowData.sort((a, b) => {
+            if (!a[fieldName]) return 1;
+            if (!b[fieldName]) return -1;
+            const fieldOne = fieldName === 'id' ? a.id : a[fieldName].value;
+            const fieldTwo = fieldName === 'id' ? b.id : b[fieldName].value;
+            if (fieldOne === fieldTwo) return 0;
+            if (ascending) {
+              return fieldOne < fieldTwo ? 1 : -1;
+            } else {
+              return fieldOne > fieldTwo ? 1 : -1;
+            }
+          })
+        ]
+      }
+    });
+    console.log(rowData);
   };
 
   /*  
@@ -44,18 +53,18 @@ export default function GridHeader(props) {
   // Set the header using the prop passed from the grid container.
   const moveHeader = (curPos) => {
     if (tempDragPos === curPos) return;
-    const dataCopy = [...headerData];
+    const dataCopy = [...colData];
     const startData = dataCopy.splice(tempDragPos, 1)[0];
     dataCopy.splice(curPos, 0, startData);
     setTempDragPos(curPos);
-    setHeaderData(dataCopy);
+    // setHeaderData(dataCopy);
   };
 
   /* Drag end will fire first and clear the temp drag position 
   as long as the drag drop is on a valid position. */
   const dragDrop = () => {
     setTempDragPos();
-    setBackupHeaderData(headerData);
+    setBackupHeaderData(colData);
     setDragActive(false);
   };
 
@@ -63,7 +72,7 @@ export default function GridHeader(props) {
   because this indicates the drop was in an invalid zone, since dragDrop never fires */
   const checkDropSuccess = () => {
     if (tempDragPos) {
-      setHeaderData(backupHeaderData);
+      // setHeaderData(backupHeaderData);
       setTempDragPos();
     }
   };
@@ -83,10 +92,10 @@ export default function GridHeader(props) {
   };
 
   const deleteColumn = (index) => {
-    setHeaderData([...headerData].splice(index, 1));
+    // setHeaderData([...headerData].splice(index, 1));
   };
 
-  const mappedHeadercells = headerData
+  const mappedHeadercells = colData
     .filter((column) => column.display)
     .map((column, index) => (
       <HeaderCell
