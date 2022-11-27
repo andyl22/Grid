@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import styles from './HeaderCell.module.scss';
 import SortIcon from '@mui/icons-material/Sort';
 import GridCell from './GridCell';
+import { GridContext } from '../../context/GridContext';
 
 export default function HeaderCell(props) {
   const {
@@ -17,6 +18,8 @@ export default function HeaderCell(props) {
     isSorting,
     updateActiveSort
   } = props;
+  const { gridData, dispatch } = useContext(GridContext);
+  const cellRef = useRef();
 
   // Column sorting logic
   const [sortAsc, setSortAsc] = useState(undefined);
@@ -61,25 +64,57 @@ export default function HeaderCell(props) {
     dragEnd();
   };
 
+  // Resize
+
+  useEffect(() => {
+    if (!cellRef) return;
+
+    const cellResizeHandler = (entries) => {
+      const observedWidth = entries[0].borderBoxSize[0].inlineSize;
+      const colData = [...gridData.colData];
+      const colIndex = colData.findIndex(
+        (col) => col.name === cellColData.name
+      );
+      if (gridData.colData[colIndex].colWidth === observedWidth) return;
+      colData.splice(colIndex, 1, {
+        ...cellColData,
+        colWidth: observedWidth
+      });
+      dispatch({ type: 'UPDATECOL', payload: { updatedColData: colData } });
+    };
+
+    const cellResizeObserver = new ResizeObserver(cellResizeHandler);
+    cellResizeObserver.observe(cellRef.current);
+
+    return () => cellResizeObserver.disconnect();
+  }, [gridData]);
+
   return (
     <div
       className={styles.headerCell}
-      onDragStart={initiateDrag}
       onDragOver={dragActive ? handleDragOver : null}
       onDrop={dragActive ? handleDragDrop : null}
-      onDragEnd={dragActive ? handleDragEnd : null}
-      draggable
     >
-      <GridCell readValue={cellColData.label} cellColData={cellColData} />
-      <button
-        className={`${styles.sortButton} ${
-          isSorting && styles.highlightButton
-        } ${sortAsc && styles.flipButton}`}
-        onClick={sortByCol}
+      <div
+        className={`${styles.cellContent} ${
+          isDragging && styles.disableOverflow
+        }`}
+        onDragStart={initiateDrag}
+        onDragEnd={dragActive ? handleDragEnd : null}
+        draggable
+        ref={cellRef}
       >
-        <SortIcon fontSize="small" />
-      </button>
-      {isDragging && <span className={styles.isDragging} />}
+        <GridCell readValue={cellColData.label} cellColData={cellColData} />
+        <button
+          className={`${styles.sortButton} ${
+            isSorting && styles.highlightButton
+          } ${sortAsc && styles.flipButton}`}
+          onClick={sortByCol}
+        >
+          <SortIcon fontSize="small" />
+        </button>
+        {isDragging && <span className={styles.isDragging} />}
+      </div>
       {dragActive && <span className={styles.dragTarget} />}
     </div>
   );

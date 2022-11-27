@@ -50,7 +50,7 @@ export default function GridHeader() {
 
   // Cut and splice data into a copy of the header data to re-order.
   // Set the header using the prop passed from the grid container.
-  const moveHeader = (curPos) => {
+  const moveHeader = async (curPos) => {
     if (tempDragPos === curPos) return;
     const dataCopy = [...colData];
     const startData = dataCopy.splice(tempDragPos, 1)[0];
