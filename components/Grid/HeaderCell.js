@@ -21,7 +21,6 @@ export default function HeaderCell(props) {
   } = props;
   const { gridData, dispatch } = useContext(GridContext);
   const cellRef = useRef();
-  console.log(tempDragPos);
 
   // Column sorting logic
   const [sortAsc, setSortAsc] = useState(undefined);
@@ -114,7 +113,13 @@ export default function HeaderCell(props) {
         >
           <SortIcon fontSize="small" />
         </button>
-        {isDragging && <span className={styles.isDragging} />}
+        {isDragging && (
+          <span
+            onDragOver={handleDragOver}
+            onDragEnd={() => {}}
+            className={styles.isDragging}
+          />
+        )}
       </div>
       {dragActive && tempDragPos !== undefined ? (
         <>
