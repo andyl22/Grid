@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Tooltip from '../Tooltip/Tooltip';
 import styles from './GridCell.module.scss';
+import { GridContext } from '../../context/GridContext';
 
 export default function GridCell(props) {
   // eslint-disable-next-line react/prop-types
@@ -13,6 +14,7 @@ export default function GridCell(props) {
   } = props;
   const [readOnly, setReadOnly] = useState(true);
   const [enableTooltip, setEnableTooltip] = useState(false);
+  const { gridData, dispatch } = useContext(GridContext);
   const cellRef = useRef();
 
   const colWidth = cellColData?.colWidth ? cellColData.colWidth : 150;
@@ -62,15 +64,22 @@ export default function GridCell(props) {
   useEffect(() => {
     if (!cellRef) return;
 
-    const cellResizeHandler = () => {
-      console.log('Resize Observer');
+    const cellResizeHandler = (entries) => {
+      const observedWidth = entries[0].borderBoxSize[0].inlineSize;
+      const colData = [...gridData.colData];
+      const colIndex = colData.findIndex(
+        (col) => col.name === cellColData.name
+      );
+      if (gridData.colData[colIndex].colWidth === observedWidth) return;
+      colData.splice(colIndex, 1, { ...cellColData, colWidth: observedWidth });
+      dispatch({ type: 'UPDATECOL', payload: { updatedColData: colData } });
     };
 
     const cellResizeObserver = new ResizeObserver(cellResizeHandler);
     cellResizeObserver.observe(cellRef.current);
 
     return () => cellResizeObserver.disconnect();
-  }, []);
+  }, [gridData]);
 
   const viewRender = (
     <div
