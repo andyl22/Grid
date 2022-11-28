@@ -70,7 +70,7 @@ export default function GridHeader() {
   /* Restore to the original data pre-drag and drop initiation if tempDragPos
   because this indicates the drop was in an invalid zone, since dragDrop never fires */
   const checkDropSuccess = () => {
-    if (tempDragPos) {
+    if (tempDragPos !== undefined) {
       setTempDragPos(undefined);
       dispatch({
         type: 'UPDATECOL',
