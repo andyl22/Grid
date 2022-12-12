@@ -2,14 +2,14 @@ import styles from './GridHeader.module.scss';
 import HeaderCell from './HeaderCell';
 import AddIcon from '@mui/icons-material/Add';
 import GridHeaderAddColDropdown from './GridHeaderAddColDropdown';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 
 import { GridContext } from '../../context/GridContext';
 
 export default function GridHeader() {
   const { gridData, dispatch } = useContext(GridContext);
   const { rowData, colData } = gridData;
-  const [backupHeaderData, setBackupHeaderData] = useState(colData);
+  const [backupHeaderData, setBackupHeaderData] = useState();
   const [tempDragPos, setTempDragPos] = useState();
   const [dragActive, setDragActive] = useState(false);
   const [activeSort, setActiveSort] = useState();
@@ -89,16 +89,25 @@ export default function GridHeader() {
   as long as the drag drop is on a valid position. */
   const dragDrop = () => {
     setTempDragPos();
-    setBackupHeaderData(colData);
+    setBackupHeaderData([...colData]);
     setDragActive(false);
   };
 
+  useEffect(() => {
+    if (dragActive) {
+      setBackupHeaderData(JSON.parse(JSON.stringify(colData)));
+    } else {
+      setBackupHeaderData(undefined);
+    }
+  }, [dragActive]);
+
   /* Restore to the original data pre-drag and drop initiation if tempDragPos
   because this indicates the drop was in an invalid zone, since dragDrop never fires */
-  const checkDropSuccess = () => {
+  const checkDropSuccess = async () => {
     if (tempDragPos !== undefined) {
       setTempDragPos(undefined);
-      dispatch({
+      setDragActive(false);
+      await dispatch({
         type: 'UPDATECOL',
         payload: { updatedColData: backupHeaderData }
       });

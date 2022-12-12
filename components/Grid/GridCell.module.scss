@@ -2,6 +2,7 @@
 
 .gridCellContainer {
   display: flex;
+  animation: 1s ease-out fadeIn;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -31,5 +32,14 @@
 .gridEditMode {
   &:hover {
     cursor: default !important;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 50%;
+  }
+  100% {
+    opacity: 100%;
   }
 }
