@@ -3,6 +3,7 @@ const dataModel = [
     label: 'ID',
     name: 'id',
     colWidth: '200px',
+    order: 1000,
     display: true
   },
   {
@@ -10,6 +11,7 @@ const dataModel = [
     name: 'testFieldOne',
     dataType: 'text',
     colWidth: '200px',
+    order: 200,
     display: true
   },
   {
@@ -18,6 +20,7 @@ const dataModel = [
     dataType: 'picklist',
     picklist: ['option one', 'option two', 'option three', 'option four'],
     colWidth: '300px',
+    order: 300,
     display: true
   },
   {
@@ -25,6 +28,7 @@ const dataModel = [
     name: 'testFieldThree',
     dataType: 'text',
     colWidth: '250px',
+    order: 400,
     display: true
   },
   {
@@ -32,6 +36,7 @@ const dataModel = [
     name: 'testFieldFour',
     dataType: 'text',
     colWidth: '250px',
+    order: 500,
     display: true
   },
   {
@@ -39,6 +44,7 @@ const dataModel = [
     name: 'testFieldFive',
     dataType: 'text',
     colWidth: '250px',
+    order: 600,
     display: true
   },
   {
@@ -53,6 +59,7 @@ const dataModel = [
     name: 'testFieldSeven',
     dataType: 'text',
     colWidth: '250px',
+    order: 700,
     display: false
   },
   {
@@ -60,6 +67,7 @@ const dataModel = [
     name: 'testFieldEight',
     dataType: 'text',
     colWidth: '250px',
+    order: 800,
     display: false
   }
 ];

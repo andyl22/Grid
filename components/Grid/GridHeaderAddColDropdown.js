@@ -11,9 +11,8 @@ export default function dropdownMenu() {
   const addColumn = (name) => {
     const indexOfCol = colData.findIndex((col) => col.name === name);
     const copyOfHeaderData = [...colData];
-    const columnToAdd = copyOfHeaderData.splice(indexOfCol, 1)[0];
-    columnToAdd.display = true;
-    copyOfHeaderData.splice(indexOfCol, 0, columnToAdd);
+    const maxOrder = colData.map((col) => col.order).sort((a, b) => b - a)[0];
+    copyOfHeaderData[indexOfCol].order = maxOrder + 1000;
     dispatch({
       type: 'UPDATECOL',
       payload: { updatedColData: copyOfHeaderData }
@@ -28,7 +27,7 @@ export default function dropdownMenu() {
   };
 
   const columnOptions = colData
-    .filter((col) => !col.display)
+    .filter((col) => !col.order)
     .map((col) => {
       return (
         <div

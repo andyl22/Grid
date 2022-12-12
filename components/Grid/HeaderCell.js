@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext, useRef } from 'react';
 import styles from './HeaderCell.module.scss';
 import SortIcon from '@mui/icons-material/Sort';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import GridCell from './GridCell';
 import { GridContext } from '../../context/GridContext';
 
@@ -17,6 +18,7 @@ export default function HeaderCell(props) {
     sortByField,
     isSorting,
     updateActiveSort,
+    deleteColumn,
     tempDragPos
   } = props;
   const { gridData, dispatch } = useContext(GridContext);
@@ -42,6 +44,10 @@ export default function HeaderCell(props) {
   useEffect(() => {
     if (isSorting) sortByCol();
   }, []);
+
+  const handleHideColumn = () => {
+    deleteColumn(order);
+  };
 
   /* Column reording. Allow the drag effect and add the order of the drag start header. 
   The order attribute is retrieved when the drag ends through the event details
@@ -112,6 +118,9 @@ export default function HeaderCell(props) {
           onClick={sortByCol}
         >
           <SortIcon fontSize="small" />
+        </button>
+        <button className={styles.deleteButton} onClick={handleHideColumn}>
+          <VisibilityOffIcon fontSize="small" />
         </button>
         {isDragging && (
           <span

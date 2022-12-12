@@ -53,9 +53,35 @@ export default function GridHeader() {
   const moveHeader = async (curPos) => {
     if (tempDragPos === curPos) return;
     const dataCopy = [...colData];
-    const startData = dataCopy.splice(tempDragPos, 1)[0];
-    dataCopy.splice(curPos, 0, startData);
-    setTempDragPos(curPos);
+    const filteredDataCopy = dataCopy
+      .filter((col) => col.order)
+      .sort((a, b) => a.order - b.order);
+    const tempDragIndex = dataCopy.findIndex(
+      (col) => col.order === tempDragPos
+    );
+    const curIndex = filteredDataCopy.findIndex((col) => col.order === curPos);
+    const tempDragCol = dataCopy[tempDragIndex];
+    const currentCol = filteredDataCopy[curIndex];
+    const leftCol = filteredDataCopy[curIndex - 1];
+    const rightCol = filteredDataCopy[curIndex + 1];
+    let newOrder;
+    if (!rightCol) {
+      newOrder = currentCol.order + 1000;
+      tempDragCol.order = newOrder;
+      setTempDragPos(newOrder);
+    } else if (!leftCol) {
+      newOrder = currentCol.order - 1000;
+      tempDragCol.order = newOrder;
+      setTempDragPos(newOrder);
+    } else if (tempDragPos >= rightCol.order) {
+      newOrder = (leftCol.order + currentCol.order) / 2;
+      tempDragCol.order = newOrder;
+      setTempDragPos(newOrder);
+    } else {
+      newOrder = (rightCol.order + currentCol.order) / 2;
+      tempDragCol.order = newOrder;
+      setTempDragPos(newOrder);
+    }
     dispatch({ type: 'UPDATECOL', payload: { updatedColData: dataCopy } });
   };
 
@@ -93,25 +119,29 @@ export default function GridHeader() {
     setShowDropdown(!showDropdown);
   };
 
-  const deleteColumn = (index) => {
+  const deleteColumn = (order) => {
+    const copyOfHeaderData = [...colData];
+    const colIndex = copyOfHeaderData.findIndex((col) => col.order === order);
+    copyOfHeaderData[colIndex].order = undefined;
     dispatch({
       type: 'UPDATECOL',
-      payload: { updatedColData: [...colData].splice(index, 1) }
+      payload: { updatedColData: copyOfHeaderData }
     });
   };
 
   const mappedHeadercells = colData
-    .filter((column) => column.display)
-    .map((column, index) => (
+    .filter((column) => column.order)
+    .sort((a, b) => a.order - b.order)
+    .map((column) => (
       <HeaderCell
         cellColData={column}
         key={column.name}
-        order={index}
+        order={column.order}
         dragStart={dragStart}
         dragEnter={moveHeader}
         dragDrop={dragDrop}
         dragEnd={checkDropSuccess}
-        isDragging={tempDragPos === index}
+        isDragging={tempDragPos === column.order}
         dragActive={dragActive}
         sortByField={sortByField}
         isSorting={activeSort === column.name}

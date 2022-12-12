@@ -121,9 +121,9 @@ export default function GridRowController() {
   const mappedRows = rowData
     ? rowData.map((row, index) => {
         const mappedRowData = colData
-          .filter((col) => col.display)
+          .filter((col) => col.order)
+          .sort((a, b) => a.order - b.order)
           .map((col) => {
-            if (!col.display) return;
             if (!row[col.name])
               return (
                 <GridCell
