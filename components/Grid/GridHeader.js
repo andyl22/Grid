@@ -61,28 +61,29 @@ export default function GridHeader() {
     );
     const curIndex = filteredDataCopy.findIndex((col) => col.order === curPos);
     const tempDragCol = dataCopy[tempDragIndex];
+    if (tempDragCol === undefined) return;
     const currentCol = filteredDataCopy[curIndex];
     const leftCol = filteredDataCopy[curIndex - 1];
     const rightCol = filteredDataCopy[curIndex + 1];
     let newOrder;
+    const updateOrder = async (newOrder) => {
+      tempDragCol.order = newOrder;
+      setTempDragPos(newOrder);
+    };
     if (!rightCol) {
       newOrder = currentCol.order + 1000;
-      tempDragCol.order = newOrder;
-      setTempDragPos(newOrder);
     } else if (!leftCol) {
       newOrder = currentCol.order - 1000;
-      tempDragCol.order = newOrder;
-      setTempDragPos(newOrder);
     } else if (tempDragPos >= rightCol.order) {
       newOrder = (leftCol.order + currentCol.order) / 2;
-      tempDragCol.order = newOrder;
-      setTempDragPos(newOrder);
     } else {
       newOrder = (rightCol.order + currentCol.order) / 2;
-      tempDragCol.order = newOrder;
-      setTempDragPos(newOrder);
     }
-    dispatch({ type: 'UPDATECOL', payload: { updatedColData: dataCopy } });
+    updateOrder(newOrder);
+    dispatch({
+      type: 'UPDATECOL',
+      payload: { updatedColData: dataCopy }
+    });
   };
 
   /* Drag end will fire first and clear the temp drag position 
