@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './Header.module.scss';
+import { throttle, setThrottle } from '../../utilities/throttle';
 
 export default function Header() {
   const lastScroll = useRef(0);
@@ -7,19 +8,18 @@ export default function Header() {
 
   // hide header on page scroll down, show on scroll up
   useEffect(() => {
-    let throttle;
     const handleScroll = () => {
-      if (window.scrollY === 0) throttle = false;
       if (throttle) return;
       // negative check for Safari overscroll
       if (window.scrollY > lastScroll.current && window.scrollY > 0) {
         gridRef.current.classList.add(styles.hide);
+        console.log('hide', window.scrollY, lastScroll.current);
       } else if (window.scrollY < lastScroll.current) {
+        console.log('show', window.scrollY, lastScroll.current);
         gridRef.current.classList.remove(styles.hide);
       }
       lastScroll.current = window.scrollY;
-      throttle = true;
-      setTimeout(() => (throttle = false), 300);
+      setThrottle();
     };
 
     setTimeout(() => document.addEventListener('scroll', handleScroll), 500);

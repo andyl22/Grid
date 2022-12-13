@@ -9,12 +9,12 @@
     border-bottom: 1px solid s.$grid-border-color;
   }
   .dragButton {
-    right: 100%;
+    right: 99.9%;
     position: absolute;
     height: 100%;
-    border-radius: 0;
-    border: 1px solid gray;
-    border-bottom: 0;
+    border-bottom-left-radius: 0.2rem;
+    border-top-left-radius: 0.2rem;
+    border-bottom: 1px solid white;
     &:hover {
       cursor: grab;
     }
@@ -26,7 +26,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  background: rgba(179, 189, 196, 0.35);
+  background: rgba(32, 118, 179, 0.3);
   border: 2px dashed white;
   z-index: 10;
 }

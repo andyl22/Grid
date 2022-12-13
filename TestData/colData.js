@@ -10,35 +10,35 @@ const colData = [
     name: 'testFieldOne',
     dataType: 'text',
     colWidth: 200,
-    order: 200
+    order: 2000
   },
   {
     label: 'Test Two',
     name: 'testFieldTwo',
     dataType: 'picklist',
     colWidth: 200,
-    order: 300
+    order: 3000
   },
   {
     label: 'Test Three',
     name: 'testFieldThree',
     dataType: 'text',
     colWidth: 200,
-    order: 400
+    order: 4000
   },
   {
     label: 'Test Four',
     name: 'testFieldFour',
     dataType: 'text',
     colWidth: 200,
-    order: undefined
+    order: 5000
   },
   {
     label: 'Test Five',
     name: 'testFieldFive',
     dataType: 'text',
     colWidth: 200,
-    order: 600
+    order: 6000
   },
   {
     label: 'Test Six',
